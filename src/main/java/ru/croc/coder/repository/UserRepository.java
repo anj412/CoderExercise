@@ -8,5 +8,5 @@ import ru.croc.coder.domain.User;
 
 public interface UserRepository extends CrudRepository<User, Long> {
 
-	Optional<User> findПожалуйстаByEmailIgnoreCase(String email);
+	Optional<User> findByEmailIgnoreCase(String email);
 }

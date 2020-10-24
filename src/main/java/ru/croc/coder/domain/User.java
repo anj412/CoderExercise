@@ -1,13 +1,14 @@
 package ru.croc.coder.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import ru.croc.coder.school.pearsons.SchoolRank;
+
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 public class User {
+
+	SchoolRank schoolRank = SchoolRank.STUDENT;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -15,6 +16,11 @@ public class User {
 
 	@Column(unique = true, nullable = false)
 	private String email;
+
+	@Transient
+	private Set<Course> accessedCourses;
+
+
 
 	private String firstName;
 
@@ -53,6 +59,13 @@ public class User {
 
 	public User setLastName(String lastName) {
 		this.lastName = lastName;
+		return this;
+	}
+
+	public SchoolRank getSchoolRank() { return schoolRank; }
+
+	public User setSchoolRank(SchoolRank schoolRank) {
+		this.schoolRank = schoolRank;
 		return this;
 	}
 }

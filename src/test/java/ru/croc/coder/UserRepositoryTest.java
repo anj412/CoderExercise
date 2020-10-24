@@ -19,7 +19,7 @@ public class UserRepositoryTest {
 
 	@Test
 	public void testFindByEmail() {
-		Optional<User> user = userRepository.findПожалуйстаByEmailIgnoreCase("episarenko@croc.ru");
+		Optional<User> user = userRepository.findByEmailIgnoreCase("episarenko@croc.ru");
 		assertThat(user).isNotEmpty();
 	}
 }
