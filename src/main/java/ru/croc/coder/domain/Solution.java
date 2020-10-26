@@ -14,6 +14,8 @@ public class Solution {
 
     @Transient
     Exercise exercise;
+    
+    private String description;
 
 
 }

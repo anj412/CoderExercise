@@ -7,8 +7,16 @@ import java.util.Set;
 
 @Entity
 public class User {
+	
+	
 
-	SchoolRank schoolRank = SchoolRank.STUDENT;
+	@Override
+	public String toString() {
+		return "User [schoolRank=" + schoolRank + ", email=" + email + ", firstName=" + firstName + ", lastName="
+				+ lastName + "]";
+	}
+
+	
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -16,24 +24,24 @@ public class User {
 
 	@Column(unique = true, nullable = false)
 	private String email;
+	
+	@Column(nullable = false, length = 12)
+	private String password;
 
 	@Transient
 	private Set<Course> accessedCourses;
 
+	SchoolRank schoolRank = SchoolRank.STUDENT;
 
 
 	private String firstName;
 
 	private String lastName;
-
-	public Long getId() {
-		return id;
-	}
-
-	public User setId(Long id) {
-		this.id = id;
-		return this;
-	}
+	
+	public String getPassword() {return password;}
+	public User setPassword(String password) {	this.password = password; return this;}
+	public Long getId() {return id;}
+	public User setId(Long id) {this.id = id; return this;	}
 
 	public String getEmail() {
 		return email;

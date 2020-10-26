@@ -1,14 +1,19 @@
 package ru.croc.coder.domain;
 
-import ru.croc.coder.school.exercises.AttachmentToExercise;
+
 import ru.croc.coder.school.exercises.DifficultyLevelOfExercise;
 import ru.croc.coder.school.exercises.TestCase;
 
-import javax.persistence.*;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Set;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Transient;
 
 @Entity
 public class Exercise {
@@ -21,40 +26,24 @@ public class Exercise {
     private Set<Course> courseSet;
 
     @Transient
-    private Solution solution;
-
-    public Long getId() {
-        return id;
-    }
+    private Solution solution; 
 
     private String description;
-
-    public String getDescription() {
-        return description;
-    }
-
-    public Exercise setDescription(String description) {
-        this.description = description;
-        return this;
-    }
     private DifficultyLevelOfExercise difficultyLevel;
-    public DifficultyLevelOfExercise getDifficultyLevel() {
-        return difficultyLevel;
-    }
-    public Exercise setDifficultyLevel(DifficultyLevelOfExercise difficultyLevel) {
-        this.difficultyLevel = difficultyLevel;
-        return this;
-    }
-
-
-
-
-
-    private ArrayList<AttachmentToExercise> attachments;
-
+  
+    @Transient
+    private Set<ExerciseAttachment> attachmentSet;
+    
+    @Transient
+    private Set<ExerciseData> dataSet;
+    
+    @Transient
+    private Set<TestCase> testCaseSet;
+    
+    
     private String enterData;
     private String exitData;
-    private ArrayList<TestCase> testCases;
+    
     private String referenceSolution;
 
     private LocalDate dateOpened;
@@ -64,6 +53,22 @@ public class Exercise {
 
     private int maxRam;
     private int maxDiskStorage;
+    
+    public Long getId() { return id;}
+    
+    public String getDescription() { return description;}
 
+    public Exercise setDescription(String description) {
+        this.description = description;
+        return this;
+    }
+    
 
+    public DifficultyLevelOfExercise getDifficultyLevel() {
+        return difficultyLevel;
+    }
+    public Exercise setDifficultyLevel(DifficultyLevelOfExercise difficultyLevel) {
+        this.difficultyLevel = difficultyLevel;
+        return this;
+    }
 }

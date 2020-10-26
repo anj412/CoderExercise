@@ -40,9 +40,9 @@ public class Init implements CommandLineRunner {
 		long numUser = userRepository.count();
 		log.info("Number of users: {}", numUser);
 
-		addUser("Evgeny", "Pisarenko", "episarenko@croc.ru");
-		addUser("Andrew", "Kostromin", "6620@croc.ru");
-		User teacher1 = addUser("Peter", "Vasechkin", "pop@glas.net");
+		addUser("Evgeny", "Pisarenko", "episarenko@croc.ru", "");
+		addUser("Andrew", "Kostromin", "6620@croc.ru", "");
+		User teacher1 = addUser("Peter", "Vasechkin", "pop@glas.net", "");
 		teacher1.setSchoolRank(SchoolRank.TEACHER);
 		userRepository.save(teacher1);
 
@@ -51,9 +51,9 @@ public class Init implements CommandLineRunner {
 		addExercise("Third exersise", DifficultyLevelOfExercise.HARD);
 		addExercise("Fouth exercise",DifficultyLevelOfExercise.AVERAGE);
 		addExercise("5th exercise",DifficultyLevelOfExercise.AVERAGE);
-		//addExercise("6th exercise",DifficultyLevelOfExercise.AVERAGE);
-		//addExercise("7th exercise",DifficultyLevelOfExercise.AVERAGE);
-		//addExercise("8th exercise",DifficultyLevelOfExercise.AVERAGE);
+		addExercise("6th exercise",DifficultyLevelOfExercise.AVERAGE);
+		addExercise("7th exercise",DifficultyLevelOfExercise.AVERAGE);
+		addExercise("8th exercise",DifficultyLevelOfExercise.AVERAGE);
 		//addExercise("9th exercise",DifficultyLevelOfExercise.AVERAGE);
 
 		
@@ -83,13 +83,14 @@ public class Init implements CommandLineRunner {
 		return exercise;
 	}
 
-	public User addUser(String firstName, String lastName, String email) {
+	public User addUser(String firstName, String lastName, String email, String password) {
 		User user = null;
 		if (userRepository.findByEmailIgnoreCase(email).isEmpty()) {
 			user = new User()
 					.setFirstName(firstName)
 					.setLastName(lastName)
-					.setEmail(email);
+					.setEmail(email)
+					.setPassword(password);
 			Long userId = userRepository.save(user).getId();
 			log.info("Created user id: {}", userId);
 		}
