@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import ru.croc.coder.domain.User;
 import ru.croc.coder.repository.CourseRepository;
+import ru.croc.coder.repository.ExerciseAttachmentRepository;
 import ru.croc.coder.repository.ExerciseRepository;
 import ru.croc.coder.repository.SolutionRepository;
 import ru.croc.coder.repository.UserRepository;
@@ -16,6 +17,7 @@ import ru.croc.coder.school.courses.CourseStatus;
 import ru.croc.coder.school.exercises.DifficultyLevelOfExercise;
 import ru.croc.coder.school.pearsons.SchoolRank;
 import ru.croc.coder.domain.Exercise;
+import ru.croc.coder.domain.ExerciseAttachment;
 
 @Component
 public class Init implements CommandLineRunner {
@@ -30,6 +32,8 @@ public class Init implements CommandLineRunner {
 	private CourseRepository courseRepository;
 	@Autowired
 	private SolutionRepository solutionRepository;
+	@Autowired
+	private ExerciseAttachmentRepository exerciseAttachmentRepository;
 
 
 
@@ -50,12 +54,18 @@ public class Init implements CommandLineRunner {
 		addExercise("Second exercise", DifficultyLevelOfExercise.AVERAGE);
 		addExercise("Third exersise", DifficultyLevelOfExercise.HARD);
 		addExercise("Fouth exercise",DifficultyLevelOfExercise.AVERAGE);
-		addExercise("5th exercise",DifficultyLevelOfExercise.AVERAGE);
-		addExercise("6th exercise",DifficultyLevelOfExercise.AVERAGE);
-		addExercise("7th exercise",DifficultyLevelOfExercise.AVERAGE);
-		addExercise("8th exercise",DifficultyLevelOfExercise.AVERAGE);
+		//addExercise("5th exercise",DifficultyLevelOfExercise.AVERAGE);
+		//addExercise("6th exercise",DifficultyLevelOfExercise.AVERAGE);
+		//addExercise("7th exercise",DifficultyLevelOfExercise.AVERAGE);
+		//addExercise("8th exercise",DifficultyLevelOfExercise.AVERAGE);
 		//addExercise("9th exercise",DifficultyLevelOfExercise.AVERAGE);
-
+		
+		addExerciseAttachment("1th for Second", "Second exercise");
+		addExerciseAttachment("2th for Second", "Second exercise");
+		addExerciseAttachment("3th for Second", "Second exercise");
+		addExerciseAttachment("1th for Third", "Third exersise");
+		addExerciseAttachment("2th for Third", "Third exersise");
+		
 		
 
 		addCourse("Начальный",CourseStatus.OPENED);
@@ -95,6 +105,16 @@ public class Init implements CommandLineRunner {
 			log.info("Created user id: {}", userId);
 		}
 		return user;
-
 	}
+	
+	public ExerciseAttachment addExerciseAttachment (String description, String exerciseDescription) {
+		ExerciseAttachment exerciseAttachment = new ExerciseAttachment()
+				.setDescription(description)
+				.setExercise(exerciseRepository.findByDescription(exerciseDescription));
+		Long exerciseAttachmentId = exerciseAttachmentRepository.save(exerciseAttachment).getId();
+		log.info("Created user id: {}", exerciseAttachmentId);
+		return exerciseAttachment;		
+	}
+
+
 }

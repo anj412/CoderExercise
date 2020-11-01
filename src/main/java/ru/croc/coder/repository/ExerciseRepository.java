@@ -6,5 +6,6 @@ import ru.croc.coder.domain.Exercise;
 import java.util.Optional;
 
 public interface ExerciseRepository extends CrudRepository<Exercise, Long> {
-    Optional<Exercise> findByDescription(String description);
+	Exercise findByDescription(String description);
+    Optional<Exercise> findById(Long id);
 }

@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
+@Table(name = "users")
 public class User {
 	
 	
@@ -28,8 +29,8 @@ public class User {
 	@Column(nullable = false, length = 12)
 	private String password;
 
-	@Transient
-	private Set<Course> accessedCourses;
+	@OneToMany(mappedBy = "user")
+    Set<CourseRegistration> registrations;
 
 	SchoolRank schoolRank = SchoolRank.STUDENT;
 
@@ -52,18 +53,14 @@ public class User {
 		return this;
 	}
 
-	public String getFirstName() {
-		return firstName;
-	}
+	public String getFirstName() { return firstName; }
 
 	public User setFirstName(String firstName) {
 		this.firstName = firstName;
 		return this;
 	}
 
-	public String getLastName() {
-		return lastName;
-	}
+	public String getLastName() { return lastName;}
 
 	public User setLastName(String lastName) {
 		this.lastName = lastName;

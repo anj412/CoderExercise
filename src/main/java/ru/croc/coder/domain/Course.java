@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
+@Table(name = "courses")
 public class Course {
 
     @Id
@@ -14,11 +15,15 @@ public class Course {
     private CourseStatus courseStatus;
     private String description;
 
-    @Transient
-    private Set<Exercise> exerciseSet;
+    @ManyToMany
+    @JoinTable(
+    		  name = "exercise_choosen", 
+    		  joinColumns = @JoinColumn(name = "exercise_id"), 
+    		  inverseJoinColumns = @JoinColumn(name = "course_id"))
+    private Set<Exercise> choosenExercises;
 
-    @Transient
-    private Set<User> accessedStudents;
+    @OneToMany(mappedBy = "course")
+    Set<CourseRegistration> registrations;
 
     public String getDescription() { return description;}
     public Course setDescription(String description) {
@@ -34,12 +39,5 @@ public class Course {
         this.courseStatus = courseStatus;
         return this;
     }
-
-
-
-
-
-    public boolean checkCorrectCourseStatement() {
-        //CODE HER
-        return true;}
+   
 }

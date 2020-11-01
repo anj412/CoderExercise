@@ -7,20 +7,20 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 @Entity
-@Table(name = "tests")
-public class ExerciseTestCase {
+@Table(name = "registrations")
+public class CourseRegistration {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
-		
-	//@Transient
-	@ManyToOne
-	@JoinColumn (name = "exercise_id")
-	Exercise exercise;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 	
-	private String description;
+	@ManyToOne
+	@JoinColumn(name = "course_id")
+	Course course;
+	
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	User user;
 
 }
