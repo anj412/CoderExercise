@@ -14,17 +14,95 @@ public class Solution {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    //@OneToOne
-    //@Transient
     @ManyToOne
-	@JoinColumn (name = "exercise_id")
+    @JoinColumn(name = "exercise_id", nullable = false)
     Exercise exercise;
 
-    @Transient
+    @JoinColumn(nullable = false)
+    @ManyToOne
     private User author;
     
     private String description;
 
-    @Column(columnDefinition = "TIMESTAMP")
+    @Column(name = "time", nullable = false, columnDefinition = "TIMESTAMP")
     private LocalDateTime time;
+
+    @Embedded
+    private Code code;
+
+    @Column(nullable = false)
+    private Boolean passed = false;
+
+    public SolutionSize getSolutionSize() {
+        return solutionSize;
+    }
+
+    public Solution setSolutionSize(SolutionSize solutionSize) {
+        this.solutionSize = solutionSize;
+        return this;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public Solution setId(Long id) {
+        this.id = id;
+        return this;
+    }
+
+    public Exercise getExercise() {
+        return exercise;
+    }
+
+    public Solution setExercise(Exercise exercise) {
+        this.exercise = exercise;
+        return this;
+    }
+
+    public User getAuthor() {
+        return author;
+    }
+
+    public Solution setAuthor(User author) {
+        this.author = author;
+        return this;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Solution setDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
+    public LocalDateTime getTime() {
+        return time;
+    }
+
+    public Solution setTime(LocalDateTime time) {
+        this.time = time;
+        return this;
+    }
+
+    public Code getCode() {
+        return code;
+    }
+
+    public Solution setCode(Code code) {
+        this.code = code;
+        return this;
+    }
+
+    public Boolean getPassed() {
+        return passed;
+    }
+
+    public Solution setPassed(Boolean passed) {
+        this.passed = passed;
+        return this;
+    }
+
 }

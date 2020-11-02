@@ -1,13 +1,6 @@
 package ru.croc.coder.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 import ru.croc.coder.school.exercises.ExerciseDataType;
 
@@ -23,6 +16,8 @@ public class ExerciseData {
 	@JoinColumn (name = "data_id")
 	Exercise exercise;
 	
+
+	@Enumerated(EnumType.STRING)
 	private ExerciseDataType exerciseDataType;
 	
 	private String description;

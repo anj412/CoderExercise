@@ -1,7 +1,7 @@
 package ru.croc.coder.domain;
 
 import java.time.Duration;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -10,7 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 
 @Entity
@@ -24,80 +23,73 @@ public class ExerciseRestriction {
 	@OneToMany(mappedBy = "restriction")	
 	private Set<Exercise> exercises;
 		
-	private String enterData;
-    private String exitData;
-    
-    private String referenceSolution;
-
-    private LocalDate dateOpened;
-    private LocalDate dateClosed;
+    private LocalDateTime timeOpened;
+    private LocalDateTime timeClosed;
 
     private Duration solutionDuration;
-
     private int maxRam;
     private int maxDiskStorage;
 
-    public String getEnterData() {
-        return enterData;
+    public Long getId() {
+        return id;
     }
 
-    public void setEnterData(String enterData) {
-        this.enterData = enterData;
+    public ExerciseRestriction setId(Long id) {
+        this.id = id;
+        return this;
     }
 
-    public String getExitData() {
-        return exitData;
+    public Set<Exercise> getExercises() {
+        return exercises;
     }
 
-    public void setExitData(String exitData) {
-        this.exitData = exitData;
+    public ExerciseRestriction setExercises(Set<Exercise> exercises) {
+        this.exercises = exercises;
+        return this;
     }
 
-    public String getReferenceSolution() {
-        return referenceSolution;
+    public LocalDateTime getTimeOpened() {
+        return timeOpened;
     }
 
-    public void setReferenceSolution(String referenceSolution) {
-        this.referenceSolution = referenceSolution;
+    public ExerciseRestriction setTimeOpened(LocalDateTime timeOpened) {
+        this.timeOpened = timeOpened;
+        return this;
     }
 
-    public LocalDate getDateOpened() {
-        return dateOpened;
+    public LocalDateTime getTimeClosed() {
+        return timeClosed;
     }
 
-    public void setDateOpened(LocalDate dateOpened) {
-        this.dateOpened = dateOpened;
-    }
-
-    public LocalDate getDateClosed() {
-        return dateClosed;
-    }
-
-    public void setDateClosed(LocalDate dateClosed) {
-        this.dateClosed = dateClosed;
+    public ExerciseRestriction setTimeClosed(LocalDateTime timeClosed) {
+        this.timeClosed = timeClosed;
+        return this;
     }
 
     public Duration getSolutionDuration() {
         return solutionDuration;
     }
 
-    public void setSolutionDuration(Duration solutionDuration) {
+    public ExerciseRestriction setSolutionDuration(Duration solutionDuration) {
         this.solutionDuration = solutionDuration;
+        return this;
     }
 
     public int getMaxRam() {
         return maxRam;
     }
 
-    public void setMaxRam(int maxRam) {
+    public ExerciseRestriction setMaxRam(int maxRam) {
         this.maxRam = maxRam;
+        return this;
     }
 
     public int getMaxDiskStorage() {
         return maxDiskStorage;
     }
 
-    public void setMaxDiskStorage(int maxDiskStorage) {
+    public ExerciseRestriction setMaxDiskStorage(int maxDiskStorage) {
         this.maxDiskStorage = maxDiskStorage;
+        return this;
     }
 }

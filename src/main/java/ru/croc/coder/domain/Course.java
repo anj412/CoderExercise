@@ -12,7 +12,10 @@ public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @Enumerated(EnumType.STRING)
     private CourseStatus courseStatus;
+
     private String description;
 
     @ManyToMany

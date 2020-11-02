@@ -14,7 +14,7 @@ public class CourseRegistration {
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "course_id")
 	Course course;

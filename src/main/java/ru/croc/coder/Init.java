@@ -6,18 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import ru.croc.coder.domain.User;
+import ru.croc.coder.domain.*;
 import ru.croc.coder.repository.CourseRepository;
 import ru.croc.coder.repository.ExerciseAttachmentRepository;
 import ru.croc.coder.repository.ExerciseRepository;
 import ru.croc.coder.repository.SolutionRepository;
 import ru.croc.coder.repository.UserRepository;
-import ru.croc.coder.domain.Course;
 import ru.croc.coder.school.courses.CourseStatus;
 import ru.croc.coder.school.exercises.DifficultyLevelOfExercise;
+import ru.croc.coder.school.exercises.ProgrammingLanguage;
 import ru.croc.coder.school.pearsons.SchoolRank;
-import ru.croc.coder.domain.Exercise;
-import ru.croc.coder.domain.ExerciseAttachment;
 
 @Component
 public class Init implements CommandLineRunner {
@@ -44,33 +42,41 @@ public class Init implements CommandLineRunner {
 		long numUser = userRepository.count();
 		log.info("Number of users: {}", numUser);
 
-		addUser("Evgeny", "Pisarenko", "episarenko@croc.ru", "");
-		addUser("Andrew", "Kostromin", "6620@croc.ru", "");
-		User teacher1 = addUser("Peter", "Vasechkin", "pop@glas.net", "");
-		teacher1.setSchoolRank(SchoolRank.TEACHER);
-		userRepository.save(teacher1);
+		User user1 = addUser("Evgeny", "Pisarenko", "episarenko@croc.ru", "");
+		User user2 = addUser("Andrew", "Kostromin", "6620@croc.ru", "");
+		User user3 = addUser("Peter", "Vasechkin", "pop@glas.net", "");
+		user1.setSchoolRank(SchoolRank.TEACHER);
+		userRepository.save(user1);
 
-		addExercise("First exercise", DifficultyLevelOfExercise.EASY);
-		addExercise("Second exercise", DifficultyLevelOfExercise.AVERAGE);
-		addExercise("Third exersise", DifficultyLevelOfExercise.HARD);
-		addExercise("Fouth exercise",DifficultyLevelOfExercise.AVERAGE);
-		//addExercise("5th exercise",DifficultyLevelOfExercise.AVERAGE);
-		//addExercise("6th exercise",DifficultyLevelOfExercise.AVERAGE);
-		//addExercise("7th exercise",DifficultyLevelOfExercise.AVERAGE);
-		//addExercise("8th exercise",DifficultyLevelOfExercise.AVERAGE);
-		//addExercise("9th exercise",DifficultyLevelOfExercise.AVERAGE);
+		User author = userRepository.findByEmailIgnoreCase("episarenko@croc.ru").get();
+		Exercise exercise1 = addExercise(author, "First exercise", DifficultyLevelOfExercise.EASY,
+				ProgrammingLanguage.JAVA, "a+b", 3);
+		Exercise exercise2= addExercise(author,"Second exercise", DifficultyLevelOfExercise.AVERAGE,
+				ProgrammingLanguage.JAVA, "a+b", 3);
+		Exercise exercise3 = addExercise(author, "Third exercise", DifficultyLevelOfExercise.HARD,
+				ProgrammingLanguage.JAVA, "a+b", 3);
+		Exercise exercise4 = addExercise(author, "Fouth exercise",DifficultyLevelOfExercise.AVERAGE,
+				ProgrammingLanguage.JAVA, "a+b", 3);
+		//addExercise(author, "5th exercise",DifficultyLevelOfExercise.AVERAGE, ProgrammingLanguage.JAVA, "a+b", 3);
+		//addExercise(author, "6th exercise",DifficultyLevelOfExercise.AVERAGE, ProgrammingLanguage.JAVA, "a+b", 3);
+		//addExercise(author, "7th exercise",DifficultyLevelOfExercise.AVERAGE, ProgrammingLanguage.JAVA, "a+b", 3);
+		//addExercise(author, "8th exercise",DifficultyLevelOfExercise.AVERAGE, ProgrammingLanguage.JAVA, "a+b", 3);
+		//addExercise(author, "9th exercise",DifficultyLevelOfExercise.AVERAGE, ProgrammingLanguage.JAVA, "a+b", 3);
 		
-		addExerciseAttachment("1th for Second", "Second exercise");
-		addExerciseAttachment("2th for Second", "Second exercise");
-		addExerciseAttachment("3th for Second", "Second exercise");
-		addExerciseAttachment("1th for Third", "Third exersise");
-		addExerciseAttachment("2th for Third", "Third exersise");
+		addExerciseAttachment("1th for Second", exercise2);
+		addExerciseAttachment("2th for Second", exercise2);
+		addExerciseAttachment("3th for Second", exercise2);
+		addExerciseAttachment("1th for Third", exercise3);
+		addExerciseAttachment("2th for Third", exercise3);
 		
 		
 
 		addCourse("Начальный",CourseStatus.OPENED);
 		addCourse("Особый",CourseStatus.CLOSED);
 		addCourse("Средний",CourseStatus.OPENED);
+
+
+
 
 	}
 
@@ -84,10 +90,14 @@ public class Init implements CommandLineRunner {
 	}
 
 
-	public Exercise addExercise (String description, DifficultyLevelOfExercise difficultyLevel) {
+	public Exercise addExercise  (User author, String description, DifficultyLevelOfExercise level,
+								  ProgrammingLanguage language, String text, Integer maxAttempts) {
 		Exercise exercise = new Exercise()
+				.setAuthor(author)
 				.setDescription(description)
-				.setDifficultyLevel(difficultyLevel);
+				.setDifficultyLevel(level)
+				.setTemplate(new Code().setText(text).setLanguage(language))
+				.setMaxAttempts(maxAttempts);
 		Long exerciseId = exerciseRepository.save(exercise).getId();
 		log.info("Created exercise id: {}", exerciseId);
 		return exercise;
@@ -107,14 +117,25 @@ public class Init implements CommandLineRunner {
 		return user;
 	}
 	
-	public ExerciseAttachment addExerciseAttachment (String description, String exerciseDescription) {
+	public ExerciseAttachment addExerciseAttachment (String description, Exercise exercise) {
 		ExerciseAttachment exerciseAttachment = new ExerciseAttachment()
 				.setDescription(description)
-				.setExercise(exerciseRepository.findByDescription(exerciseDescription));
+				.setExercise(exercise);
 		Long exerciseAttachmentId = exerciseAttachmentRepository.save(exerciseAttachment).getId();
 		log.info("Created user id: {}", exerciseAttachmentId);
 		return exerciseAttachment;		
 	}
 
-
+	private Exercise createExercise (User author, String description, DifficultyLevelOfExercise level,
+								 ProgrammingLanguage language, String text, Integer maxAttempts) {
+		Exercise exercise = new Exercise()
+				.setAuthor(author)
+				.setDescription(description)
+				.setDifficultyLevel(level)
+				.setTemplate(new Code().setText(text).setLanguage(language))
+				.setMaxAttempts(maxAttempts);
+		Long exerciseId = exerciseRepository.save(exercise).getId();
+		log.info("Created exercise id: {}", exerciseId);
+		return exercise;
+	}
 }
