@@ -18,15 +18,11 @@ public class Course {
 
     private String description;
 
-    @ManyToMany
-    @JoinTable(
-    		  name = "exercise_choosen", 
-    		  joinColumns = @JoinColumn(name = "exercise_id"), 
-    		  inverseJoinColumns = @JoinColumn(name = "course_id"))
-    private Set<Exercise> choosenExercises;
+    @OneToMany(mappedBy = "course")
+    private Set<ExerciseCourseRegistration> exercises;
 
     @OneToMany(mappedBy = "course")
-    Set<CourseRegistration> registrations;
+    Set<UserCourseRegistration> registrations;
 
     public String getDescription() { return description;}
     public Course setDescription(String description) {

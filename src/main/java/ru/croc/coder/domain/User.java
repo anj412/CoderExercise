@@ -30,7 +30,9 @@ public class User {
 	private String password;
 
 	@OneToMany(mappedBy = "user")
-    Set<CourseRegistration> registrations;
+    Set<UserCourseRegistration> registrations;
+
+	Integer attemptsCount = 0;
 
 	SchoolRank schoolRank = SchoolRank.STUDENT;
 
@@ -71,6 +73,17 @@ public class User {
 
 	public User setSchoolRank(SchoolRank schoolRank) {
 		this.schoolRank = schoolRank;
+		return this;
+	}
+
+
+
+	public Integer getAttemptsCount() {
+		return attemptsCount;
+	}
+
+	public User setAttemptsCount(Integer attemptsCount) {
+		this.attemptsCount = attemptsCount;
 		return this;
 	}
 }

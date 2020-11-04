@@ -27,8 +27,8 @@ public class ExerciseRestriction {
     private LocalDateTime timeClosed;
 
     private Duration solutionDuration;
-    private int maxRam;
-    private int maxDiskStorage;
+    private Integer maxRam;
+    private Integer maxDiskStorage;
 
     public Long getId() {
         return id;
@@ -75,20 +75,20 @@ public class ExerciseRestriction {
         return this;
     }
 
-    public int getMaxRam() {
+    public Integer getMaxRam() {
         return maxRam;
     }
 
-    public ExerciseRestriction setMaxRam(int maxRam) {
+    public ExerciseRestriction setMaxRam(Integer maxRam) {
         this.maxRam = maxRam;
         return this;
     }
 
-    public int getMaxDiskStorage() {
+    public Integer getMaxDiskStorage() {
         return maxDiskStorage;
     }
 
-    public ExerciseRestriction setMaxDiskStorage(int maxDiskStorage) {
+    public ExerciseRestriction setMaxDiskStorage(Integer maxDiskStorage) {
         this.maxDiskStorage = maxDiskStorage;
         return this;
     }

@@ -25,6 +25,13 @@ public class UserRestRepositoryTest {
 	
 	@Test
 	public void testGetUsers() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.get("/users")).andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
+		mockMvc.perform(MockMvcRequestBuilders.get("/users")).
+				andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
 	}
+
+	@Test
+	public void testRestrictionAccept () throws Exception {
+		//mockMvc.perform(MockMvcRequestBuilders.get("/exercises/5/solutions"))
+	}
+
 }

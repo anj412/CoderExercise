@@ -19,8 +19,8 @@ public class Exercise {
     @ManyToOne
     private User author;
     
-    @ManyToMany(mappedBy = "choosenExercises")
-    private Set<Course> usedCourses;
+    @OneToMany(mappedBy = "exercise")
+    private Set<ExerciseCourseRegistration> usedCourses;
 
     @OneToMany(mappedBy = "exercise")
     private Set<Solution> solutions;
@@ -80,11 +80,11 @@ public class Exercise {
         return this;
     }
 
-    public Set<Course> getUsedCourses() {
+    public Set<ExerciseCourseRegistration> getUsedCourses() {
         return usedCourses;
     }
 
-    public Exercise setUsedCourses(Set<Course> usedCourses) {
+    public Exercise setUsedCourses(Set<ExerciseCourseRegistration> usedCourses) {
         this.usedCourses = usedCourses;
         return this;
     }

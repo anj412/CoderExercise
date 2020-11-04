@@ -22,4 +22,6 @@ public class UserRepositoryTest {
 		Optional<User> user = userRepository.findByEmailIgnoreCase("episarenko@croc.ru");
 		assertThat(user).isNotEmpty();
 	}
+
+
 }

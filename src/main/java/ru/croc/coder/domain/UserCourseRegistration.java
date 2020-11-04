@@ -10,17 +10,43 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "registrations")
-public class CourseRegistration {
+public class UserCourseRegistration {
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
 	@ManyToOne
 	@JoinColumn(name = "course_id")
-	Course course;
+	private Course course;
 	
 	@ManyToOne
 	@JoinColumn(name = "user_id")
-	User user;
+	private User user;
 
+	public Long getId() {
+		return id;
+	}
+
+	public UserCourseRegistration setId(Long id) {
+		this.id = id;
+		return this;
+	}
+
+	public Course getCourse() {
+		return course;
+	}
+
+	public UserCourseRegistration setCourse(Course course) {
+		this.course = course;
+		return this;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public UserCourseRegistration setUser(User user) {
+		this.user = user;
+		return this;
+	}
 }
