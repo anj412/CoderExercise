@@ -10,10 +10,8 @@ import org.springframework.stereotype.Component;
 import ru.croc.coder.domain.User;
 
 @Component
-@RepositoryEventHandler(User.class)
+@RepositoryEventHandler
 public class UserEventsHandler {
-	
-	
 
 	@HandleBeforeSave
 	@HandleBeforeCreate
@@ -28,6 +26,5 @@ public class UserEventsHandler {
 		System.out.println("!!!:" + user);
 		//user.setPassword("hash" + user.getPassword().hashCode() );		
 	}
-	
 
 }

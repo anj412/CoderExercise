@@ -1,6 +1,6 @@
-package ru.croc.coder.service;
+package ru.croc.coder.service.exceptions;
 
-public class NotPassedRestrictionsException extends RuntimeException {
+public class NotPassedRestrictionsException extends ServiceException {
     public NotPassedRestrictionsException(String string) {
         super(string);
     }

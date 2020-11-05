@@ -7,10 +7,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import ru.croc.coder.domain.Solution;
 import ru.croc.coder.domain.User;
-import ru.croc.coder.repository.ExerciseRepository;
 import ru.croc.coder.repository.UserRepository;
 import ru.croc.coder.service.ExerciseService;
-import ru.croc.coder.service.NotFoundException;
+import ru.croc.coder.service.exceptions.NotFoundException;
 import ru.croc.coder.service.UserContext;
 
 @RestController
@@ -23,9 +22,9 @@ public class SolutionController {
     @Autowired
     private UserContext userContext;
 
-    @PostMapping("/users/{userId}/exercises/{exerciseId}/solutions")
-    public Solution submit(@PathVariable Long userId, @PathVariable Long exerciseId, @RequestBody String text) {
-        return exerciseService.submit(userId, exerciseId, text);
+    @PostMapping("/exercises/{exerciseId}/solutions")
+    public Solution submit(@PathVariable Long exerciseId, @RequestBody String text) {
+        return exerciseService.submit(exerciseId, text);
     }
 
     @PostMapping("/auth/{userId}")
