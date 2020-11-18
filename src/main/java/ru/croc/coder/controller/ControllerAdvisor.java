@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import ru.croc.coder.controller.dto.ExceptionDto;
 import ru.croc.coder.service.exceptions.ExerciseConstrainException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import ru.croc.coder.service.exceptions.ServiceException;
@@ -16,7 +17,8 @@ import java.util.HashMap;
 public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ServiceException.class)
-    public ResponseEntity<Object> handleExerciseConstraintException(ExerciseConstrainException ex, WebRequest request) {
+    public ResponseEntity<Object> handleExerciseConstraintException(ExerciseConstrainException ex,
+                                                                    WebRequest request) {
         return handleExceptionInternal(ex,
                     new ExceptionDto(ex.getClass().getName(),
                         ex.getMessage(),

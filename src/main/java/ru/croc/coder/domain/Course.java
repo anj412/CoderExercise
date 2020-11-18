@@ -19,10 +19,10 @@ public class Course {
     private String description;
 
     @OneToMany(mappedBy = "course")
-    private Set<ExerciseCourseRegistration> exercises;
+    private Set<ExerciseCourseRegistration> exerciseRegistrations;
 
     @OneToMany(mappedBy = "course")
-    Set<UserCourseRegistration> registrations;
+    private Set<UserCourseRegistration> userRegistrations;
 
     public String getDescription() { return description;}
     public Course setDescription(String description) {
@@ -38,5 +38,27 @@ public class Course {
         this.courseStatus = courseStatus;
         return this;
     }
-   
+
+    public Course setId(Long id) {
+        this.id = id;
+        return this;
+    }
+
+    public Set<ExerciseCourseRegistration> getExerciseRegistrations() {
+        return exerciseRegistrations;
+    }
+
+    public Course setExerciseRegistrations(Set<ExerciseCourseRegistration> exerciseRegistrations) {
+        this.exerciseRegistrations = exerciseRegistrations;
+        return this;
+    }
+
+    public Set<UserCourseRegistration> getUserRegistrations() {
+        return userRegistrations;
+    }
+
+    public Course setUserRegistrations(Set<UserCourseRegistration> userRegistrations) {
+        this.userRegistrations = userRegistrations;
+        return this;
+    }
 }

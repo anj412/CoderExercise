@@ -1,4 +1,4 @@
-package ru.croc.coder.controller;
+package ru.croc.coder.controller.dto;
 
 import java.util.Map;
 

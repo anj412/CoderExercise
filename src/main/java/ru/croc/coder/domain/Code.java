@@ -10,28 +10,27 @@ public class Code {
     @Column(nullable = false)
     @Basic(fetch = FetchType.LAZY)
     @Lob
-    private String text;
+    private String codeText;
 
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private ProgrammingLanguage language;
+    private ProgrammingLanguage programmingLanguage;
 
-    public String getText() {
-        return text;
+    public String getCodeText() {
+        return codeText;
     }
 
-    public Code setText(String text) {
-        this.text = text;
+    public Code setCodeText(String codeText) {
+        this.codeText = codeText;
         return this;
     }
 
-    public ProgrammingLanguage getLanguage() {
-        return language;
+    public ProgrammingLanguage getProgrammingLanguage() {
+        return programmingLanguage;
     }
-
-    public Code setLanguage(ProgrammingLanguage language) {
-        this.language = language;
+    public Code setProgrammingLanguage(ProgrammingLanguage programmingLanguage) {
+        this.programmingLanguage = programmingLanguage;
         return this;
     }
 }

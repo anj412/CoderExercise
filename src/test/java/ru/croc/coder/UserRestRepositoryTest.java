@@ -10,6 +10,10 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import ru.croc.coder.domain.User;
+import ru.croc.coder.service.exceptions.NotFoundException;
+
+import static org.junit.Assert.assertEquals;
 
 @SpringBootTest
 public class UserRestRepositoryTest {
@@ -30,8 +34,22 @@ public class UserRestRepositoryTest {
 	}
 
 	@Test
-	public void testRestrictionAccept () throws Exception {
-		//mockMvc.perform(MockMvcRequestBuilders.get("/exercises/5/solutions"))
+	public void testAuth() throws Exception {
+		mockMvc.perform(MockMvcRequestBuilders.get("/auth/1")).
+				andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
 	}
+	/*@Test
+	public void testFakeGetUsers2() throws Exception {
+		mockMvc.perform(MockMvcRequestBuilders.get("/users")).
+				andExpect(MockMvcResultMatchers.);
+	}*/
+
+	/*@Test
+	public void testRestrictionAccept () throws Exception {
+		mockMvc.perform(MockMvcRequestBuilders.get("/exercises/5/solutions")).
+				andExpect(MockMvcResultMatchers.
+	}*/
+
+
 
 }
