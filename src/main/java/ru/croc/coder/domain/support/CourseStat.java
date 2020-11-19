@@ -1,4 +1,4 @@
-package ru.croc.coder.domain.stat;
+package ru.croc.coder.domain.support;
 
 import java.util.Map;
 

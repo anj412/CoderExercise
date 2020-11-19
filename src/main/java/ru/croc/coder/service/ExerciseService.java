@@ -1,6 +1,5 @@
 package ru.croc.coder.service;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.croc.coder.domain.*;
-import ru.croc.coder.domain.stat.ExToFile;
+import ru.croc.coder.domain.support.ExToFile;
 import ru.croc.coder.repository.*;
 
 import ru.croc.coder.domain.Code;
