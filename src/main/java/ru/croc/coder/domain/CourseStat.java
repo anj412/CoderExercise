@@ -1,12 +1,12 @@
 package ru.croc.coder.domain;
 
+import java.util.Map;
+
 public class CourseStat {
     Long courseId;
-
-    Long studentsN;
-    Long teachersN;
-    Long exercisesN;
-    Long decidedExercisesN;
+    Long studentsNumber;
+    Long teachersNumber;
+    Map<Long,Long> exStat;
 
     public Long getCourseId() {
         return courseId;
@@ -17,39 +17,30 @@ public class CourseStat {
         return this;
     }
 
-    public Long getStudentsN() {
-        return studentsN;
+    public Long getStudentsNumber() {
+        return studentsNumber;
     }
 
-    public CourseStat setStudentsN(Long studentsN) {
-        this.studentsN = studentsN;
+    public CourseStat setStudentsNumber(Long studentsNumber) {
+        this.studentsNumber = studentsNumber;
         return this;
     }
 
-    public Long getTeachersN() {
-        return teachersN;
+    public Long getTeachersNumber() {
+        return teachersNumber;
     }
 
-    public CourseStat setTeachersN(Long teachersN) {
-        this.teachersN = teachersN;
+    public CourseStat setTeachersNumber(Long teachersNumber) {
+        this.teachersNumber = teachersNumber;
         return this;
     }
 
-    public Long getExercisesN() {
-        return exercisesN;
+    public Map<Long, Long> getExStat() {
+        return exStat;
     }
 
-    public CourseStat setExercisesN(Long exercisesN) {
-        this.exercisesN = exercisesN;
-        return this;
-    }
-
-    public Long getDecidedExercisesN() {
-        return decidedExercisesN;
-    }
-
-    public CourseStat setDecidedExercisesN(Long decidedExercisesN) {
-        this.decidedExercisesN = decidedExercisesN;
+    public CourseStat setExStat(Map<Long, Long> exStat) {
+        this.exStat = exStat;
         return this;
     }
 }

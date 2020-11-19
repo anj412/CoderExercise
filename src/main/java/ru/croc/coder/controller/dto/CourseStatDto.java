@@ -1,13 +1,13 @@
 package ru.croc.coder.controller.dto;
 
+import java.util.Map;
+
 public class CourseStatDto {
 
     Long courseId;
-
-    Long studentsN;
-    Long teachersN;
-    Long exercisesN;
-    Long decidedExercisesN;
+    Long studentsNumber;
+    Long teachersNumber;
+    Map<Long,Long> exStat;
 
     public Long getCourseId() {
         return courseId;
@@ -17,35 +17,27 @@ public class CourseStatDto {
         this.courseId = courseId;
     }
 
-    public Long getStudentsN() {
-        return studentsN;
+    public Long getStudentsNumber() {
+        return studentsNumber;
     }
 
-    public void setStudentsN(Long studentsN) {
-        this.studentsN = studentsN;
+    public void setStudentsNumber(Long studentsNumber) {
+        this.studentsNumber = studentsNumber;
     }
 
-    public Long getTeachersN() {
-        return teachersN;
+    public Long getTeachersNumber() {
+        return teachersNumber;
     }
 
-    public void setTeachersN(Long teachersN) {
-        this.teachersN = teachersN;
+    public void setTeachersNumber(Long teachersNumber) {
+        this.teachersNumber = teachersNumber;
     }
 
-    public Long getExercisesN() {
-        return exercisesN;
+    public Map<Long, Long> getExStat() {
+        return exStat;
     }
 
-    public void setExercisesN(Long exercisesN) {
-        this.exercisesN = exercisesN;
-    }
-
-    public Long getDecidedExercisesN() {
-        return decidedExercisesN;
-    }
-
-    public void setDecidedExercisesN(Long decidedExercisesN) {
-        this.decidedExercisesN = decidedExercisesN;
+    public void setExStat(Map<Long, Long> exStat) {
+        this.exStat = exStat;
     }
 }

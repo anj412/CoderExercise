@@ -1,5 +1,6 @@
 package ru.croc.coder.repository;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import ru.croc.coder.domain.Exercise;
 import ru.croc.coder.domain.User;
@@ -11,6 +12,11 @@ import java.util.Set;
 
 public interface ExerciseRepository extends CrudRepository<Exercise, Long> {
 	//Exercise findByDescription(String description);
+/*    @Query("Select e.exercise from EXERCISES e")
+    List<Exercise> selectAllExercises();*/
+
+    List<Exercise> findAll();
+
     Optional<Exercise> findById(Long id);
 
     Set<Exercise> findBySolutions_Author_IdAndSolutions_PassedAndDifficultyLevel(Long id, Boolean passed, DifficultyLevelOfExercise difficultyLevel);
@@ -21,6 +27,8 @@ public interface ExerciseRepository extends CrudRepository<Exercise, Long> {
     }
 
     Long countBySolutions_Author_IdAndSolutions_PassedAndDifficultyLevel(Long id, Boolean passed, DifficultyLevelOfExercise difficultyLevel);
+
+
 
    /* default Long userStat(Long userId, DifficultyLevelOfExercise level) {
         return countBySolutions_Author_IdAndSolutions_PassedAndDifficultyLevel(userId, true, level);

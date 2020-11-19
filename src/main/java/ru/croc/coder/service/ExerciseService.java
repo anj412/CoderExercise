@@ -17,6 +17,7 @@ import ru.croc.coder.school.pearsons.SchoolRank;
 import ru.croc.coder.service.exceptions.ExerciseConstrainException;
 import ru.croc.coder.service.exceptions.NotFoundException;
 import ru.croc.coder.service.exceptions.NotPassedRestrictionsException;
+import ru.croc.coder.service.exceptions.ServiceException;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -52,7 +53,7 @@ public class ExerciseService {
         this.userContext = userContext;
     }
 
-    @Transactional(isolation = Isolation.SERIALIZABLE, noRollbackFor = ExerciseConstrainException.class)
+    @Transactional(isolation = Isolation.SERIALIZABLE, noRollbackFor = ServiceException.class)
     public Solution submit (Long exerciseId, String text) {
 
         //User user = userRepository.findById(userId).orElseThrow(NotFoundException::new);
@@ -68,7 +69,7 @@ public class ExerciseService {
                 throw new ExerciseConstrainException("Max attempts exceeded");
         }
 
-        restrictionCheck(exercise);
+        //restrictionCheck(exercise);
 
         Solution solution = new Solution()
                 .setAuthor(user)

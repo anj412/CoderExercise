@@ -73,4 +73,9 @@ public class UserController {
         return modelMapper.map(userService.buildUserStat(userId), UserStatDto.class);
     }
 
+    @PostMapping("/diktant")
+    public void diktant() {
+        userService.totalDiktant();
+    }
+
 }

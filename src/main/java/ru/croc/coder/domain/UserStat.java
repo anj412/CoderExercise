@@ -2,9 +2,9 @@ package ru.croc.coder.domain;
 
 public class UserStat {
     Long userId;
-    Long easyDecidedExercisesN;
-    Long averageDecidedExercisesN;
-    Long hardDecidedExercisesN;
+    Long easyDecidedExercisesNumber;
+    Long averageDecidedExercisesNumber;
+    Long hardDecidedExercisesNumber;
 
     public Long getUserId() {
         return userId;
@@ -15,30 +15,30 @@ public class UserStat {
         return this;
     }
 
-    public Long getEasyDecidedExercisesN() {
-        return easyDecidedExercisesN;
+    public Long getEasyDecidedExercisesNumber() {
+        return easyDecidedExercisesNumber;
     }
 
-    public UserStat setEasyDecidedExercisesN(Long easyDecidedExercisesN) {
-        this.easyDecidedExercisesN = easyDecidedExercisesN;
+    public UserStat setEasyDecidedExercisesNumber(Long easyDecidedExercisesNumber) {
+        this.easyDecidedExercisesNumber = easyDecidedExercisesNumber;
         return this;
     }
 
-    public Long getAverageDecidedExercisesN() {
-        return averageDecidedExercisesN;
+    public Long getAverageDecidedExercisesNumber() {
+        return averageDecidedExercisesNumber;
     }
 
-    public UserStat setAverageDecidedExercisesN(Long averageDecidedExercisesN) {
-        this.averageDecidedExercisesN = averageDecidedExercisesN;
+    public UserStat setAverageDecidedExercisesNumber(Long averageDecidedExercisesNumber) {
+        this.averageDecidedExercisesNumber = averageDecidedExercisesNumber;
         return this;
     }
 
-    public Long getHardDecidedExercisesN() {
-        return hardDecidedExercisesN;
+    public Long getHardDecidedExercisesNumber() {
+        return hardDecidedExercisesNumber;
     }
 
-    public UserStat setHardDecidedExercisesN(Long hardDecidedExercisesN) {
-        this.hardDecidedExercisesN = hardDecidedExercisesN;
+    public UserStat setHardDecidedExercisesNumber(Long hardDecidedExercisesNumber) {
+        this.hardDecidedExercisesNumber = hardDecidedExercisesNumber;
         return this;
     }
 }

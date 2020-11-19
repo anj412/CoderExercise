@@ -18,7 +18,7 @@ public class Solution {
     @JoinColumn(name = "exercise_id", nullable = false)
     private Exercise exercise;
 
-    @JoinColumn(nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     @ManyToOne
     private User author;
     

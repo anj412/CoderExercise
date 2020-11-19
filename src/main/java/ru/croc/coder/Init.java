@@ -13,9 +13,11 @@ import ru.croc.coder.school.exercises.ProgrammingLanguage;
 import ru.croc.coder.school.pearsons.SchoolRank;
 import ru.croc.coder.service.CourseService;
 import ru.croc.coder.service.ExerciseService;
+import ru.croc.coder.service.UserContext;
 import ru.croc.coder.service.UserService;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Component
 public class Init implements CommandLineRunner {
@@ -34,6 +36,7 @@ public class Init implements CommandLineRunner {
 	private CourseService courseService;
 	private ExerciseService exerciseService;
 	private UserService userService;
+	private UserContext userContext;
 
 	public Init(UserRepository userRepository,
 				ExerciseRepository exerciseRepository,
@@ -45,7 +48,8 @@ public class Init implements CommandLineRunner {
 				ExerciseCourseRegistrationRepository exerciseCourseRegistrationRepository,
 				CourseService courseService,
 				ExerciseService exerciseService,
-				UserService userService) {
+				UserService userService,
+				UserContext userContext) {
 		this.userRepository = userRepository;
 		this.exerciseRepository = exerciseRepository;
 		this.courseRepository = courseRepository;
@@ -57,6 +61,7 @@ public class Init implements CommandLineRunner {
 		this.courseService = courseService;
 		this.exerciseService = exerciseService;
 		this.userService = userService;
+		this.userContext = userContext;
 	}
 
 	@Override
@@ -68,9 +73,15 @@ public class Init implements CommandLineRunner {
 
 		User user1 = userService.addUser("Evgeny", "Pisarenko", "episarenko@croc.ru", "123");
 		User user2 = userService.addUser("Andrew", "Kostromin", "6620@croc.ru", "123");
-		User user3 = userService.addUser("Peter", "Vasechkin", "pop@glas.net", "12345");
-		User user4 = userService.addUser("Kolya", "Pugovkin", "pop1@glas.net", "12345");
+		User user3 = userService.addUser("Peter", "Vasechkin", "pop@glas.net", "123");
+		User user4 = userService.addUser("Kolya1", "Pugovkin1", "pop1@glas.net", "123");
+		User user5 = userService.addUser("Kolya2", "Pugovkin2", "pop2@glas.net", "123");
+		User user6 = userService.addUser("Kolya3", "Pugovkin3", "pop3@glas.net", "123");
+		User user7 = userService.addUser("Kolya4", "Pugovkin4", "pop4@glas.net", "123");
+		User user8 = userService.addUser("Kolya5", "Pugovkin5", "pop6@glas.net", "123");
+		User user9 = userService.addUser("Kolya5", "Pugovkin5", "pop7@glas.net", "123");
 		userService.setUserToTeacher(user1);
+		userService.setUserToTeacher(user3);
 
 		User author = userRepository.findByEmailIgnoreCase("episarenko@croc.ru").get();
 		Exercise exercise1 = exerciseService.addExercise(author, "First exercise", DifficultyLevelOfExercise.EASY,
@@ -81,6 +92,16 @@ public class Init implements CommandLineRunner {
 				ProgrammingLanguage.JAVA, "a+b", 3);
 		Exercise exercise4 = exerciseService. addExercise(author, "Fouth exercise",DifficultyLevelOfExercise.AVERAGE,
 				ProgrammingLanguage.JAVA, "a+b", 3);
+		Exercise exercise5 = exerciseService. addExercise(author, "5th exercise",DifficultyLevelOfExercise.AVERAGE,
+				ProgrammingLanguage.JAVA, "a+b", 7);
+		Exercise exercise6 = exerciseService. addExercise(author, "6th exercise",DifficultyLevelOfExercise.EASY,
+				ProgrammingLanguage.JAVA, "a+b", 7);
+		Exercise exercise7 = exerciseService. addExercise(author, "7th exercise",DifficultyLevelOfExercise.HARD,
+				ProgrammingLanguage.JAVA, "a+b", 7);
+		Exercise exercise8 = exerciseService. addExercise(author, "8th exercise",DifficultyLevelOfExercise.HARD,
+				ProgrammingLanguage.JAVA, "a+b", 7);
+		Exercise exercise9 = exerciseService. addExercise(author, "9th exercise",DifficultyLevelOfExercise.EASY,
+				ProgrammingLanguage.JAVA, "a+b", 7);
 		//addExercise(author, "5th exercise",DifficultyLevelOfExercise.AVERAGE, ProgrammingLanguage.JAVA, "a+b", 3);
 		//addExercise(author, "6th exercise",DifficultyLevelOfExercise.AVERAGE, ProgrammingLanguage.JAVA, "a+b", 3);
 		//addExercise(author, "7th exercise",DifficultyLevelOfExercise.AVERAGE, ProgrammingLanguage.JAVA, "a+b", 3);
@@ -112,20 +133,26 @@ public class Init implements CommandLineRunner {
 		//UserCourseRegistration userCourseRegistrationNull = courseService.addUserCourseRegistration(user3, course1);
 		UserCourseRegistration userCourseRegistration3 = courseService.addUserCourseRegistration(user4, course2);
 		UserCourseRegistration userCourseRegistration4 = courseService.addUserCourseRegistration(user1, course1);
+		courseService.addUserCourseRegistration(user5, course1);
+		courseService.addUserCourseRegistration(user6, course1);
+		courseService.addUserCourseRegistration(user7, course1);
+		courseService.addUserCourseRegistration(user8, course1);
+		courseService.addUserCourseRegistration(user9, course1);
 
 		ExerciseCourseRegistration exerciseCourseReg1 = courseService.addExerciseCourseRegistration(exercise1, course1);
 		ExerciseCourseRegistration exerciseCourseReg2 = courseService.addExerciseCourseRegistration(exercise2, course1);
 		ExerciseCourseRegistration exerciseCourseReg3 = courseService.addExerciseCourseRegistration(exercise3, course2);
-		//ExerciseCourseRegistration exerciseCourseRegN = courseService.addExerciseCourseRegistration(exercise3, course2);
-		//System.out.println(courseService.bruteFindExercisesByCourse(course1));
-		//System.out.println(course1.getExerciseRegistrations());
+		courseService.addExerciseCourseRegistration(exercise4, course2);
+		courseService.addExerciseCourseRegistration(exercise5, course1);
+		courseService.addExerciseCourseRegistration(exercise6, course1);
+		courseService.addExerciseCourseRegistration(exercise7, course1);
+		courseService.addExerciseCourseRegistration(exercise8, course1);
+		courseService.addExerciseCourseRegistration(exercise9, course1);
+
+		//totalDiktant();
 
 
 	}
-
-
-
-
 
 	public ExerciseRestriction addSimpleRestriction (Exercise exercise,
 													 LocalDateTime timeOpened, LocalDateTime timeClosed) {

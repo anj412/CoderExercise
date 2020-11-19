@@ -2,9 +2,9 @@ package ru.croc.coder.controller.dto;
 
 public class UserStatDto {
     Long userId;
-    Long easyDecidedExercisesN;
-    Long averageDecidedExercisesN;
-    Long hardDecidedExercisesN;
+    Long easyDecidedExercisesNumber;
+    Long averageDecidedExercisesNumber;
+    Long hardDecidedExercisesNumber;
 
     public Long getUserId() {
         return userId;
@@ -14,27 +14,27 @@ public class UserStatDto {
         this.userId = userId;
     }
 
-    public Long getEasyDecidedExercisesN() {
-        return easyDecidedExercisesN;
+    public Long getEasyDecidedExercisesNumber() {
+        return easyDecidedExercisesNumber;
     }
 
-    public void setEasyDecidedExercisesN(Long easyDecidedExercisesN) {
-        this.easyDecidedExercisesN = easyDecidedExercisesN;
+    public void setEasyDecidedExercisesNumber(Long easyDecidedExercisesNumber) {
+        this.easyDecidedExercisesNumber = easyDecidedExercisesNumber;
     }
 
-    public Long getAverageDecidedExercisesN() {
-        return averageDecidedExercisesN;
+    public Long getAverageDecidedExercisesNumber() {
+        return averageDecidedExercisesNumber;
     }
 
-    public void setAverageDecidedExercisesN(Long averageDecidedExercisesN) {
-        this.averageDecidedExercisesN = averageDecidedExercisesN;
+    public void setAverageDecidedExercisesNumber(Long averageDecidedExercisesNumber) {
+        this.averageDecidedExercisesNumber = averageDecidedExercisesNumber;
     }
 
-    public Long getHardDecidedExercisesN() {
-        return hardDecidedExercisesN;
+    public Long getHardDecidedExercisesNumber() {
+        return hardDecidedExercisesNumber;
     }
 
-    public void setHardDecidedExercisesN(Long hardDecidedExercisesN) {
-        this.hardDecidedExercisesN = hardDecidedExercisesN;
+    public void setHardDecidedExercisesNumber(Long hardDecidedExercisesNumber) {
+        this.hardDecidedExercisesNumber = hardDecidedExercisesNumber;
     }
 }

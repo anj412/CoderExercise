@@ -5,7 +5,7 @@ import ru.croc.coder.school.pearsons.SchoolRank;
 import javax.persistence.*;
 import java.util.Set;
 
-@Entity
+@Entity(name = "users")
 @Table(name = "users")
 public class User {
 
@@ -36,7 +36,19 @@ public class User {
 	private String firstName;
 
 	private String lastName;
-	
+
+	@OneToMany(mappedBy = "author")
+	private Set<Solution> solutions;
+
+	public Set<Solution> getSolutions() {
+		return solutions;
+	}
+
+	public User setSolutions(Set<Solution> solutions) {
+		this.solutions = solutions;
+		return this;
+	}
+
 	public String getPassword() {return password;}
 	public User setPassword(String password) {	this.password = password; return this;}
 

@@ -1,6 +1,5 @@
 package ru.croc.coder.service;
 
-import jdk.dynalink.Operation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -9,12 +8,10 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.croc.coder.domain.*;
 import ru.croc.coder.repository.*;
 import ru.croc.coder.school.courses.CourseStatus;
-import ru.croc.coder.school.exercises.ProgrammingLanguage;
 import ru.croc.coder.school.pearsons.SchoolRank;
 import ru.croc.coder.service.exceptions.CourseConstrainException;
 import ru.croc.coder.service.exceptions.ExerciseConstrainException;
 import ru.croc.coder.service.exceptions.NotFoundException;
-import ru.croc.coder.service.exceptions.UserConstrainException;
 
 import java.util.*;
 
@@ -136,14 +133,20 @@ public class CourseService implements ServiceCommander {
     }
 
     public CourseStat courseStat(Long courseId) {
-        courseRepository.findById(courseId).orElseThrow(NotFoundException::new);
+
         if (!checkUserIsTeacher(userContext.getCurrentUser()))
             throw new CourseConstrainException("Teacher must authorized to get this stat");
+        List<Exercise> exercises = CommandGetExercisesCourse(courseId);
+
+        Map<Long,Long> exStat = new HashMap<>();
+        for (Exercise exercise:exercises)
+            exStat.put(exercise.getId(), userRepository.countExerciseCourseStat(courseId, exercise));
 
         return new CourseStat().
                 setCourseId(courseId).
-                setStudentsN(userRepository.countBySchoolRankAndRegistrations_Course_Id(SchoolRank.STUDENT, courseId));
-
+                setStudentsNumber(userRepository.countBySchoolRankAndRegistrations_Course_Id(SchoolRank.STUDENT, courseId)).
+                setTeachersNumber(userRepository.countBySchoolRankAndRegistrations_Course_Id(SchoolRank.TEACHER, courseId)).
+                setExStat(exStat);
     }
 
 

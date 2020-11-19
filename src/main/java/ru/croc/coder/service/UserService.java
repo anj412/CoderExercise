@@ -5,14 +5,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
+import ru.croc.coder.domain.Exercise;
 import ru.croc.coder.domain.User;
 import ru.croc.coder.domain.UserStat;
 import ru.croc.coder.repository.*;
 import ru.croc.coder.school.exercises.DifficultyLevelOfExercise;
 import ru.croc.coder.school.pearsons.SchoolRank;
 import ru.croc.coder.service.exceptions.NotFoundException;
+import ru.croc.coder.service.exceptions.ServiceException;
 import ru.croc.coder.service.exceptions.UserConstrainException;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -32,19 +35,22 @@ public class UserService implements ServiceCommander {
     private UserContext userContext;
     private ExerciseCourseRegistrationRepository exerciseCourseRegistrationRepository;
     private UserRepository userRepository;
+    private ExerciseService exerciseService;
 
     public UserService(UserCourseRegistrationRepository userCourseRegistrationRepository,
                          ExerciseRepository exerciseRepository,
                          CourseRepository courseRepository,
                          UserContext userContext,
                          ExerciseCourseRegistrationRepository exerciseCourseRegistrationRepository,
-                         UserRepository userRepository) {
+                         UserRepository userRepository,
+                         ExerciseService exerciseService) {
         this.userCourseRegistrationRepository = userCourseRegistrationRepository;
         this.exerciseRepository = exerciseRepository;
         this.courseRepository = courseRepository;
         this.userContext = userContext;
         this.exerciseCourseRegistrationRepository = exerciseCourseRegistrationRepository;
         this.userRepository = userRepository;
+        this.exerciseService = exerciseService;
     }
 
     @Transactional(isolation = Isolation.SERIALIZABLE, noRollbackFor = UserConstrainException.class)
@@ -52,6 +58,7 @@ public class UserService implements ServiceCommander {
         User user = userRepository.findById(userId).orElseThrow(NotFoundException::new);
         checkUserPassword(user, password);
         userContext.setCurrentUser(user);
+        log.info("UserId {} login", user.getId());
         return user;
 
     }
@@ -61,6 +68,7 @@ public class UserService implements ServiceCommander {
         User user = userRepository.findByEmailIgnoreCase(email).orElseThrow(NotFoundException::new);
         checkUserPassword(user, password);
         userContext.setCurrentUser(user);
+        log.info("UserId {} login", user.getId());
         return user;
     }
 
@@ -124,10 +132,33 @@ public class UserService implements ServiceCommander {
         userRepository.findById(userId).orElseThrow(NotFoundException::new);
         return new UserStat().
                 setUserId(userId).
-                setEasyDecidedExercisesN(exerciseRepository.userStat(userId, DifficultyLevelOfExercise.EASY)).
-                setAverageDecidedExercisesN(exerciseRepository.userStat(userId, DifficultyLevelOfExercise.AVERAGE)).
-                setHardDecidedExercisesN(exerciseRepository.userStat(userId, DifficultyLevelOfExercise.HARD));
+                setEasyDecidedExercisesNumber(exerciseRepository.userStat(userId, DifficultyLevelOfExercise.EASY)).
+                setAverageDecidedExercisesNumber(exerciseRepository.userStat(userId, DifficultyLevelOfExercise.AVERAGE)).
+                setHardDecidedExercisesNumber(exerciseRepository.userStat(userId, DifficultyLevelOfExercise.HARD));
     }
 
+    @Transactional(isolation = Isolation.SERIALIZABLE, noRollbackFor = ServiceException.class)
+    public void totalDiktant() {
+        //List<User> users = userRepository.selectAllUsers();
+        List<User> users = userRepository.findAll();
+        for (User u: users)
+            log.info("In DIKTANT list userId {}", u.getId());
+
+        List<Exercise> exercises = exerciseRepository.findAll();
+        for (Exercise e: exercises)
+            log.info("In DIKTANT list exerciseId {}", e.getId());
+
+        for (User user: users) {
+            userContext.setCurrentUser(user);
+            log.info("UserId {} writing diktant", user.getId());
+            //userService.authorization(user.getId(), "123");
+
+            for (Exercise exercise : exercises) {
+                log.info("ExerciseId {} for diktant", exercise.getId());
+                for (int i = 0; i < 2; i++)
+                    exerciseService.submit(exercise.getId(), "anyRemedy");
+            }
+        }
+    }
 
 }
