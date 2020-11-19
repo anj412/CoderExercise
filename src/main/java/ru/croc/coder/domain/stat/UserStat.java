@@ -1,4 +1,4 @@
-package ru.croc.coder.domain;
+package ru.croc.coder.domain.stat;
 
 public class UserStat {
     Long userId;

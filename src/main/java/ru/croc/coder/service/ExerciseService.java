@@ -1,13 +1,18 @@
 package ru.croc.coder.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.croc.coder.domain.*;
+import ru.croc.coder.domain.stat.ExToFile;
 import ru.croc.coder.repository.*;
 
 import ru.croc.coder.domain.Code;
@@ -19,7 +24,11 @@ import ru.croc.coder.service.exceptions.NotFoundException;
 import ru.croc.coder.service.exceptions.NotPassedRestrictionsException;
 import ru.croc.coder.service.exceptions.ServiceException;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
@@ -123,7 +132,7 @@ public class ExerciseService {
         return rnd.nextBoolean();
     }
 
-
+    @Transactional(noRollbackFor = NotPassedRestrictionsException.class)
     public boolean restrictionCheck(Exercise exercise) {
         ExerciseRestriction restriction = exercise.getRestriction();
         //SHAME ?
@@ -148,7 +157,50 @@ public class ExerciseService {
         return true;
     }
 
-    @Transactional(isolation = Isolation.SERIALIZABLE, noRollbackFor = ExerciseConstrainException.class)
+    @Transactional(noRollbackFor = IOException.class)
+    public Exercise exerciseFromFile(String fileName) throws IOException {
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            Resource resource = new ClassPathResource(fileName);
+            File file = resource.getFile();
+            ExToFile exToFile = objectMapper.readValue(file, ExToFile.class);
+
+            return commandToAddExercise(exToFile.getDescription(),
+                    exToFile.getIntLevel(),
+                    exToFile.getIntLanguage(),
+                    exToFile.getTemplateText(),
+                    exToFile.getMaxAttempts());
+        //List<Car> listCar = objectMapper.readValue(jsonCarArray, new  TypeReference<List<Car>>(){});
+    }
+    @Transactional(noRollbackFor = IOException.class)
+    public List<Exercise> exercisesFromFile(String fileName) throws IOException {
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        Resource resource = new ClassPathResource(fileName);
+        File file = resource.getFile();
+
+        /*String jsonArray = objectMapper.readValue(file, String.class);
+        System.out.println(jsonArray);
+        List<ExToFile> exToFiles = objectMapper.readValue(jsonArray, new
+                TypeReference<List<ExToFile>>(){});*/
+        ExToFile[] exToFiles = objectMapper.readValue(file, ExToFile[].class);
+
+        //List<ExToFile> exToFiles = objectMapper.readValue(file, new TypeReference<List<ExToFile>>(){});
+
+        List<Exercise> exercises = new ArrayList<>();
+
+        for(ExToFile exToFile : exToFiles) exercises.add(commandToAddExercise(
+                        exToFile.getDescription(),
+                        exToFile.getIntLevel(),
+                        exToFile.getIntLanguage(),
+                        exToFile.getTemplateText(),
+                        exToFile.getMaxAttempts()));
+        return exercises;
+        //List<Car> listCar = objectMapper.readValue(jsonCarArray, new  TypeReference<List<Car>>(){});
+    }
+
+
+    @Transactional(isolation = Isolation.SERIALIZABLE, noRollbackFor = ServiceException.class)
     public Exercise commandToAddExercise (String description,
                                     Integer intLevel,
                                     Integer intLanguage,

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.croc.coder.domain.*;
+import ru.croc.coder.domain.stat.CourseStat;
 import ru.croc.coder.repository.*;
 import ru.croc.coder.school.courses.CourseStatus;
 import ru.croc.coder.school.pearsons.SchoolRank;

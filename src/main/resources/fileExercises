@@ -1,0 +1,20 @@
+[
+  {"description": "Temp1",
+    "intLevel": 1,
+    "intLanguage": 0,
+    "templateText": "a*a+b",
+    "maxAttempts": 5
+  },
+  {"description": "Temp2",
+    "intLevel": 0,
+    "intLanguage": 0,
+    "templateText": "a*a+b+c",
+    "maxAttempts": 4
+  },
+  {"description": "Temp3",
+    "intLevel": 1,
+    "intLanguage": 0,
+    "templateText": "a*a*a+b+d",
+    "maxAttempts": 4
+  }
+]

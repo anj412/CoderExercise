@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.croc.coder.domain.Exercise;
 import ru.croc.coder.domain.User;
-import ru.croc.coder.domain.UserStat;
+import ru.croc.coder.domain.stat.UserStat;
 import ru.croc.coder.repository.*;
 import ru.croc.coder.school.exercises.DifficultyLevelOfExercise;
 import ru.croc.coder.school.pearsons.SchoolRank;

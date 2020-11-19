@@ -18,7 +18,16 @@ public class ExerciseDto {
 
     private DifficultyLevelOfExercise difficultyLevel;
 
-    private ProgrammingLanguage programmingLanguage;
+    private Code template;
+
+    public Code getTemplate() {
+        return template;
+    }
+
+    public ExerciseDto setTemplate(Code template) {
+        this.template = template;
+        return this;
+    }
 
     public Long getId() {
         return id;
@@ -60,11 +69,5 @@ public class ExerciseDto {
         this.difficultyLevel = difficultyLevel;
     }
 
-    public ProgrammingLanguage getCodeProgrammingLanguage() {
-        return programmingLanguage;
-    }
 
-    public void setCodeProgrammingLanguage(ProgrammingLanguage codeProgrammingLanguage) {
-        programmingLanguage = codeProgrammingLanguage;
-    }
 }

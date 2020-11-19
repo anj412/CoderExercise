@@ -1,6 +1,8 @@
 package ru.croc.coder.controller;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
+import org.objectweb.asm.TypeReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +14,7 @@ import ru.croc.coder.service.ExerciseService;
 import ru.croc.coder.service.UserContext;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,14 +39,6 @@ public class ExerciseController {
         //this.modelMapper = modelMapper;
     }
 
-/*
-    String description,
-    DifficultyLevelOfExercise level,
-    ProgrammingLanguage language,
-    String templateText,
-    Integer maxAttempts)*/
-
-
     //DiffLev: 0 - Easy, 1 - Average, 2 - Hard, other - error
     //ProgLang: 0 - Java, other - error
     @PostMapping("/exercises/create/{description}/{intDiffLev}/{intProgLang}/{maxAttempts}")
@@ -58,22 +53,20 @@ public class ExerciseController {
               intProgLang,
               templateText,
               maxAttempts);
-      ExerciseDto exerciseDto = modelMapper.map(exercise, ExerciseDto.class);
-      //Shame разобраться с addMappings
-      exerciseDto.setCodeProgrammingLanguage(exercise.getTemplate().getProgrammingLanguage());
-      return exerciseDto;
+        return modelMapper.map(exercise, ExerciseDto.class);
+
     }
 
     @GetMapping("/exlist/{courseId}")
     public List<ExerciseDto> getExCourse(@PathVariable Long courseId) {
         List<Exercise> exercises = courseService.CommandGetExercisesCourse(courseId);
-        List<ExerciseDto> exerciseDtos = new ArrayList<>();
-        //SHAME SHAME SHAME
-        for (Exercise exercise: exercises) {
-            ExerciseDto exerciseDto = modelMapper.map(exercise, ExerciseDto.class);
-            exerciseDto.setCodeProgrammingLanguage(exercise.getTemplate().getProgrammingLanguage());
-            exerciseDtos.add(exerciseDto);
-        }
-        return exerciseDtos;
+        return modelMapper.map(exercises, new TypeToken<List<ExerciseDto>>() {}.getType());
+
+    }
+
+    @PostMapping("/file/{fileName}")
+    public List<ExerciseDto> exFromFile(@PathVariable String fileName) throws IOException {
+        return modelMapper.map(exerciseService.exercisesFromFile(fileName),
+                new TypeToken<List<ExerciseDto>>() {}.getType());
     }
 }
