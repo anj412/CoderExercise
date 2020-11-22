@@ -2,6 +2,7 @@ package ru.croc.coder.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,7 @@ import java.util.regex.Pattern;
 
 @Service
 public class UserService implements ServiceCommander {
+
 
     public static final String PATTERN_NAME = "^[A-Za-z0-9-_]{3,16}$";
     public static final String PATTERN_EMAIL = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" +

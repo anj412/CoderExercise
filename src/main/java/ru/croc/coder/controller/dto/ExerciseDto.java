@@ -2,10 +2,7 @@ package ru.croc.coder.controller.dto;
 
 import ru.croc.coder.domain.*;
 import ru.croc.coder.school.exercises.DifficultyLevelOfExercise;
-import ru.croc.coder.school.exercises.ProgrammingLanguage;
 
-import javax.persistence.*;
-import java.util.Set;
 
 public class ExerciseDto {
     Long id;

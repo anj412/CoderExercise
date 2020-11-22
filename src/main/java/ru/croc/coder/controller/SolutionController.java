@@ -22,20 +22,10 @@ import ru.croc.coder.service.UserContext;
 public class SolutionController {
 
     private ExerciseService exerciseService;
-    private UserRepository userRepository;
-    private UserContext userContext;
-    private CourseService courseService;
     private ModelMapper modelMapper = new ModelMapper();
 
-    public SolutionController(ExerciseService exerciseService,
-                              UserRepository userRepository,
-                              UserContext userContext,
-                              CourseService courseService /*,
-                              ModelMapper modelMapper*/) {
+    public SolutionController(ExerciseService exerciseService) {
         this.exerciseService = exerciseService;
-        this.userRepository = userRepository;
-        this.userContext = userContext;
-        this.courseService = courseService;
         //this.modelMapper = modelMapper;
     }
     @Operation(summary = "Authenticate user")
@@ -50,8 +40,5 @@ public class SolutionController {
         Solution solution = exerciseService.submit(exerciseId, text);
         return modelMapper.map(solution, SolutionDto.class);
     }
-
-
-
 
 }

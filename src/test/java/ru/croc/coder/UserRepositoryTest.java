@@ -10,8 +10,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.Assert.*;
 
+import ru.croc.coder.controller.UserController;
+import ru.croc.coder.controller.dto.UserDto;
 import ru.croc.coder.domain.User;
 import ru.croc.coder.repository.UserRepository;
+import ru.croc.coder.school.pearsons.SchoolRank;
+import ru.croc.coder.service.UserContext;
 import ru.croc.coder.service.exceptions.NotFoundException;
 
 @SpringBootTest
@@ -19,6 +23,8 @@ public class UserRepositoryTest {
 
 	@Autowired
 	private UserRepository userRepository;
+
+
 
 	@Test
 	public void testFindByEmail() {
@@ -31,6 +37,8 @@ public class UserRepositoryTest {
 		User user = userRepository.findByEmailIgnoreCase("episarenko@croc.ru").orElseThrow(NotFoundException::new);
 		assertEquals(user.getFirstName(), "Evgeny");
 	}
+
+
 
 	//Exercise exercise = exerciseRepository.findById(exerciseId).orElseThrow(NotFoundException::new);
 
