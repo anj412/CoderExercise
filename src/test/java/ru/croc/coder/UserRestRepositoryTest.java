@@ -35,7 +35,7 @@ public class UserRestRepositoryTest {
 
 	@Test
 	public void testAuth() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.get("/auth/1")).
+		mockMvc.perform(MockMvcRequestBuilders.get("/auth/1/123")).
 				andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
 	}
 	/*@Test
