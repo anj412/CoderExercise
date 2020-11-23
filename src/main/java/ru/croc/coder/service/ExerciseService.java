@@ -32,10 +32,7 @@ import java.util.Optional;
 import java.util.Random;
 
 @Service
-public class ExerciseService {
-
-    private static final Random rnd = new Random(System.currentTimeMillis());
-
+public class ExerciseService implements ServiceCommander {
     private static final ProgrammingLanguage programmingLanguages[] = ProgrammingLanguage.values();
     private static final DifficultyLevelOfExercise difficultyLevels[] = DifficultyLevelOfExercise.values();
 
@@ -61,100 +58,7 @@ public class ExerciseService {
         this.userContext = userContext;
     }
 
-    @Transactional(isolation = Isolation.SERIALIZABLE, noRollbackFor = ServiceException.class)
-    public Solution submit (Long exerciseId, String text) {
 
-        //User user = userRepository.findById(userId).orElseThrow(NotFoundException::new);
-        Exercise exercise = exerciseRepository.findById(exerciseId).orElseThrow(NotFoundException::new);
-
-        User user = userContext.getCurrentUser();
-
-        userRepository.save(user.setAttemptsCount(user.getAttemptsCount()+1));
-
-        if (exercise.getMaxAttempts() != null) {
-            long attempts = solutionRepository.countByAuthorAndExercise(user, exercise);
-            if (attempts >= exercise.getMaxAttempts())
-                throw new ExerciseConstrainException("Max attempts exceeded");
-        }
-
-        //restrictionCheck(exercise);
-
-        Solution solution = new Solution()
-                .setAuthor(user)
-                .setExercise(exercise)
-                .setTime(LocalDateTime.now())
-                .setCode(new Code().setCodeText(text).setProgrammingLanguage(exercise.getTemplate().getProgrammingLanguage()))
-                .setCheckStatus(ProcessStatus.QUEUED);
-
-        solutionRepository.save(solution);
-        log.info("Created solution id: {}", solution.getId());
-        return solution;
-    }
-
-
-
-    @Async //чтобы позволить запускать методы раньше завершения
-    @Scheduled(fixedRate = 3_000, initialDelay = 3_000) //будет вызывает метод с какой то переодичностью. 1) с фикс частотой 2) запуск с задержкой
-    public void checkSolutions() throws InterruptedException {
-        log.info("Scheduled check");
-        Solution solution = null;
-        Boolean passed = null;
-        try {
-            Optional<Solution> result = peekNextSolution();
-            if (result.isEmpty()) return;
-            solution = result.get();
-            passed = runTests(solution);
-            solution.setPassed(passed);
-        } finally {
-            if (solution != null ) {
-                ProcessStatus status;
-                if (passed != null) status = ProcessStatus.COMPLETED;
-                else status = ProcessStatus.COMPLETED_WITH_ERROR;
-                solutionRepository.save(solution.setCheckStatus(status));
-            }
-        }
-    }
-
-    @Transactional(isolation = Isolation.SERIALIZABLE)
-    public Optional<Solution> peekNextSolution() {
-        Optional<Solution> result = solutionRepository.findAnyQueued();
-        if (result.isPresent()) {
-            Solution solution = result.get();
-            solution.setCheckStatus(ProcessStatus.IN_PROGRESS);
-            solutionRepository.save(solution);
-        }
-        return result;
-    }
-
-    private boolean runTests(Solution solution) throws InterruptedException {
-        Thread.sleep(15000);
-        return rnd.nextBoolean();
-    }
-
-    @Transactional(noRollbackFor = NotPassedRestrictionsException.class)
-    public boolean restrictionCheck(Exercise exercise) {
-        ExerciseRestriction restriction = exercise.getRestriction();
-        //SHAME ?
-        if (restriction == null) {
-            log.info("There is no restriction to this exercise id {} Ok. Creating solution.. ",
-                    exercise.getId());
-            return true;
-        }
-        //SHAME SHAME
-        if (restriction.getTimeOpened() != null && LocalDateTime.now().isBefore(restriction.getTimeOpened()))
-            throw new NotPassedRestrictionsException("Its too early");
-        //SHAME SHAME
-        if (restriction.getTimeClosed() != null && LocalDateTime.now().isAfter(restriction.getTimeClosed()))
-            throw new NotPassedRestrictionsException("Its too late. ");
-
-        //check duration .. str += "Its too lengthy. "
-        //check RAM .. str += "Its too hungry. "
-        //check Disk Storage .. str += "Its too big."
-
-        log.info("All restrictions to this exercise id {} Ok. Creating solution.. ",
-                exercise.getId());
-        return true;
-    }
 
     @Transactional(noRollbackFor = IOException.class)
     public Exercise exerciseFromFile(String fileName) throws IOException {
@@ -162,6 +66,7 @@ public class ExerciseService {
             ObjectMapper objectMapper = new ObjectMapper();
             Resource resource = new ClassPathResource(fileName);
             File file = resource.getFile();
+
             ExToFile exToFile = objectMapper.readValue(file, ExToFile.class);
 
             return commandToAddExercise(exToFile.getDescription(),
@@ -171,29 +76,40 @@ public class ExerciseService {
                     exToFile.getMaxAttempts());
         //List<Car> listCar = objectMapper.readValue(jsonCarArray, new  TypeReference<List<Car>>(){});
     }
-    @Transactional(noRollbackFor = IOException.class)
-    public List<Exercise> exercisesFromFile(String fileName) throws IOException {
+
+    @Transactional(isolation = Isolation.SERIALIZABLE)
+    public List<Exercise> exercisesFromFile(String fileName){
+
+        checkUserIsTeacher();
 
         ObjectMapper objectMapper = new ObjectMapper();
         Resource resource = new ClassPathResource(fileName);
-        File file = resource.getFile();
+        List<Exercise> exercises = null;
+        try {
+            File file = resource.getFile();
+            ExToFile[] exToFiles = objectMapper.readValue(file, ExToFile[].class);
+            exercises = new ArrayList<>();
 
+            for(ExToFile exToFile : exToFiles) exercises.add(commandToAddExercise(
+                    exToFile.getDescription(),
+                    exToFile.getIntLevel(),
+                    exToFile.getIntLanguage(),
+                    exToFile.getTemplateText(),
+                    exToFile.getMaxAttempts()));
+
+        }
+        catch (IOException e) {
+            log.info(e.getMessage());
+        }
+      
         /*String jsonArray = objectMapper.readValue(file, String.class);
         System.out.println(jsonArray);
         List<ExToFile> exToFiles = objectMapper.readValue(jsonArray, new
                 TypeReference<List<ExToFile>>(){});*/
-        ExToFile[] exToFiles = objectMapper.readValue(file, ExToFile[].class);
+
 
         //List<ExToFile> exToFiles = objectMapper.readValue(file, new TypeReference<List<ExToFile>>(){});
 
-        List<Exercise> exercises = new ArrayList<>();
-
-        for(ExToFile exToFile : exToFiles) exercises.add(commandToAddExercise(
-                        exToFile.getDescription(),
-                        exToFile.getIntLevel(),
-                        exToFile.getIntLanguage(),
-                        exToFile.getTemplateText(),
-                        exToFile.getMaxAttempts()));
         return exercises;
         //List<Car> listCar = objectMapper.readValue(jsonCarArray, new  TypeReference<List<Car>>(){});
     }
@@ -206,10 +122,7 @@ public class ExerciseService {
                                     String templateText,
                                     Integer maxAttempts) {
 
-        User user = userContext.getCurrentUser();
-
-        if (user == null && user.getSchoolRank() != SchoolRank.TEACHER)
-            throw new ExerciseConstrainException("Teacher must authorized to create new exercise");
+        checkUserIsTeacher();
 
         if (intLanguage<0 || intLanguage>=programmingLanguages.length)
             throw new ExerciseConstrainException("Wrong format");
@@ -219,7 +132,7 @@ public class ExerciseService {
             throw new ExerciseConstrainException("Wrong format");
         DifficultyLevelOfExercise level = difficultyLevels[intLevel];
 
-        return addExercise (user, description, level, language, templateText, maxAttempts);
+        return addExercise (userContext.getCurrentUser(), description, level, language, templateText, maxAttempts);
     }
 
     public Exercise addExercise  (User author,
@@ -238,6 +151,8 @@ public class ExerciseService {
         log.info("Created exercise id: {}", exerciseId);
         return exercise;
     }
-
+    public void checkUserIsTeacher() {
+        checkUserIsTeacher(userContext.getCurrentUser());
+    }
 
 }

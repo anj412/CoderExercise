@@ -65,7 +65,7 @@ public class ExerciseController {
     }
 
     @PostMapping("/file/{fileName}")
-    public List<ExerciseDto> exFromFile(@PathVariable String fileName) throws IOException {
+    public List<ExerciseDto> exFromFile(@PathVariable String fileName){
         return modelMapper.map(exerciseService.exercisesFromFile(fileName),
                 new TypeToken<List<ExerciseDto>>() {}.getType());
     }

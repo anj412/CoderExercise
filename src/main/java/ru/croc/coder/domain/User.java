@@ -22,7 +22,7 @@ public class User {
 	@Column(unique = true, nullable = false)
 	private String email;
 	
-	@Column(nullable = false, length = 12)
+	@Column(nullable = false)
 	private String password;
 
 	@OneToMany(mappedBy = "user")

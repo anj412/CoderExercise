@@ -14,6 +14,7 @@ import ru.croc.coder.controller.UserController;
 import ru.croc.coder.controller.dto.UserDto;
 import ru.croc.coder.school.pearsons.SchoolRank;
 import ru.croc.coder.service.exceptions.NotFoundException;
+import ru.croc.coder.service.exceptions.PermissionException;
 import ru.croc.coder.service.exceptions.UserConstrainException;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -95,9 +96,9 @@ public class UserControllerTest {
 
         final String wrongEmail = "12345";
 
-        Throwable thrown = assertThrows(UserConstrainException.class, () -> userController.teach(2l));
+        Throwable thrown = assertThrows(PermissionException.class, () -> userController.teach(2l));
         assertNotNull(thrown);
-        assertTrue(thrown.getMessage().contains("Teacher must authorized"));
+        assertTrue(thrown instanceof PermissionException);
 
         thrown = assertThrows(UserConstrainException.class, () -> userController.reg(firstName, lastName, wrongEmail, pass));
         assertNotNull(thrown);

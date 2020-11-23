@@ -16,16 +16,17 @@ import ru.croc.coder.domain.Solution;
 import ru.croc.coder.repository.UserRepository;
 import ru.croc.coder.service.CourseService;
 import ru.croc.coder.service.ExerciseService;
+import ru.croc.coder.service.SolutionService;
 import ru.croc.coder.service.UserContext;
 
 @RestController
 public class SolutionController {
 
-    private ExerciseService exerciseService;
+    private SolutionService solutionService;
     private ModelMapper modelMapper = new ModelMapper();
 
     public SolutionController(ExerciseService exerciseService) {
-        this.exerciseService = exerciseService;
+        this.solutionService = solutionService;
         //this.modelMapper = modelMapper;
     }
     @Operation(summary = "Authenticate user")
@@ -37,7 +38,7 @@ public class SolutionController {
     })
     @PostMapping("/exercises/{exerciseId}/solutions")
     public SolutionDto submit(@PathVariable Long exerciseId, @RequestBody String text) {
-        Solution solution = exerciseService.submit(exerciseId, text);
+        Solution solution = solutionService.submit(exerciseId, text);
         return modelMapper.map(solution, SolutionDto.class);
     }
 

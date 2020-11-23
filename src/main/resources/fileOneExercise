@@ -1,0 +1,6 @@
+{"description": "Temp1",
+  "intLevel": 1,
+  "intLanguage": 0,
+  "templateText": "a*a+b",
+  "maxAttempts": 5
+}

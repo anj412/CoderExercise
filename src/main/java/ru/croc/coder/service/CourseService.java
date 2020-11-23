@@ -51,8 +51,7 @@ public class CourseService implements ServiceCommander {
     @Transactional(isolation = Isolation.SERIALIZABLE, noRollbackFor = CourseConstrainException.class)
     public Course commandToAddCourse(Integer intCourseType, String description) {
 
-        if (!checkUserIsTeacher(userContext.getCurrentUser()))
-            throw new CourseConstrainException("Teacher must authorized to create new course");
+        checkUserIsTeacher();
 
         if (intCourseType<0 || intCourseType>= courseStatuses.length)
             throw new ExerciseConstrainException("Wrong format");
@@ -70,10 +69,9 @@ public class CourseService implements ServiceCommander {
         return course;
     }
 
-    @Transactional(isolation = Isolation.SERIALIZABLE, noRollbackFor = CourseConstrainException.class)
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public ExerciseCourseRegistration commandToRegExercise(Long exerciseId, Long courseId) {
-        if (!checkUserIsTeacher(userContext.getCurrentUser()))
-            throw new CourseConstrainException("Teacher must authorized to create new course");
+        checkUserIsTeacher();
 
         Exercise exercise = exerciseRepository.findById(exerciseId).orElseThrow(NotFoundException::new);
         Course course = courseRepository.findById(courseId).orElseThrow(NotFoundException::new);
@@ -94,10 +92,9 @@ public class CourseService implements ServiceCommander {
         return registration;
     }
 
-    @Transactional(isolation = Isolation.SERIALIZABLE, noRollbackFor = CourseConstrainException.class)
+
     public UserCourseRegistration commandToRegUser(Long userId, Long courseId) {
-        if (!checkUserIsTeacher(userContext.getCurrentUser()))
-            throw new CourseConstrainException("Teacher must authorized to create new course");
+        checkUserIsTeacher();
 
         User user = userRepository.findById(userId).orElseThrow(NotFoundException::new);
         Course course = courseRepository.findById(courseId).orElseThrow(NotFoundException::new);
@@ -135,8 +132,7 @@ public class CourseService implements ServiceCommander {
 
     public CourseStat courseStat(Long courseId) {
 
-        if (!checkUserIsTeacher(userContext.getCurrentUser()))
-            throw new CourseConstrainException("Teacher must authorized to get this stat");
+        checkUserIsTeacher();
         List<Exercise> exercises = CommandGetExercisesCourse(courseId);
 
         Map<Long,Long> exStat = new HashMap<>();
@@ -150,6 +146,8 @@ public class CourseService implements ServiceCommander {
                 setExStat(exStat);
     }
 
-
+    public void checkUserIsTeacher() {
+        checkUserIsTeacher(userContext.getCurrentUser());
+    }
 
 }

@@ -38,6 +38,7 @@ public class UserService implements ServiceCommander {
     private ExerciseCourseRegistrationRepository exerciseCourseRegistrationRepository;
     private UserRepository userRepository;
     private ExerciseService exerciseService;
+    private SolutionService solutionService;
 
     public UserService(UserCourseRegistrationRepository userCourseRegistrationRepository,
                          ExerciseRepository exerciseRepository,
@@ -45,7 +46,8 @@ public class UserService implements ServiceCommander {
                          UserContext userContext,
                          ExerciseCourseRegistrationRepository exerciseCourseRegistrationRepository,
                          UserRepository userRepository,
-                         ExerciseService exerciseService) {
+                         ExerciseService exerciseService,
+                         SolutionService solutionService) {
         this.userCourseRegistrationRepository = userCourseRegistrationRepository;
         this.exerciseRepository = exerciseRepository;
         this.courseRepository = courseRepository;
@@ -53,6 +55,7 @@ public class UserService implements ServiceCommander {
         this.exerciseCourseRegistrationRepository = exerciseCourseRegistrationRepository;
         this.userRepository = userRepository;
         this.exerciseService = exerciseService;
+        this.solutionService = solutionService;
     }
 
     @Transactional(isolation = Isolation.SERIALIZABLE, noRollbackFor = UserConstrainException.class)
@@ -97,10 +100,9 @@ public class UserService implements ServiceCommander {
        return user;
     }
 
-
     public User commandSetUserToTeacher(Long userId) {
-        if (!checkUserIsTeacher(userContext.getCurrentUser()))
-            throw new UserConstrainException("Teacher must authorized to convert user to Teacher");
+        checkUserIsTeacher();
+
         User user = userRepository.findById(userId).orElseThrow(NotFoundException::new);
         return setUserToTeacher(user);
     }
@@ -124,7 +126,7 @@ public class UserService implements ServiceCommander {
         if (userRepository.findByEmailIgnoreCase(email).isPresent())
             throw new UserConstrainException("This email already exists");
     }
-    public void  checkAllowablePassword(String pass) {
+    public void checkAllowablePassword(String pass) {
         Pattern pattern = Pattern.compile(PATTERN_PASSWORD);
         Matcher matcher = pattern.matcher(pass);
         if (!matcher.matches()) throw new UserConstrainException("Invalidate password");
@@ -158,9 +160,12 @@ public class UserService implements ServiceCommander {
             for (Exercise exercise : exercises) {
                 log.info("ExerciseId {} for diktant", exercise.getId());
                 for (int i = 0; i < 2; i++)
-                    exerciseService.submit(exercise.getId(), "anyRemedy");
+                    solutionService.submit(exercise.getId(), "anyRemedy");
             }
         }
     }
 
+    public void checkUserIsTeacher() {
+        checkUserIsTeacher(userContext.getCurrentUser());
+    }
 }
