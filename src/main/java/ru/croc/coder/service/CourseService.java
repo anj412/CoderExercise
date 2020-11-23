@@ -93,15 +93,17 @@ public class CourseService implements ServiceCommander {
     }
 
 
-    public UserCourseRegistration commandToRegUser(Long userId, Long courseId) {
+/*    public UserCourseRegistration commandToRegUser(Long userId, Long courseId) {
         checkUserIsTeacher();
 
         User user = userRepository.findById(userId).orElseThrow(NotFoundException::new);
         Course course = courseRepository.findById(courseId).orElseThrow(NotFoundException::new);
 
         return addUserCourseRegistration(user, course);
-    }
+    }*/
     public  UserCourseRegistration commandToAddUserCourseRegistration (Long courseId, Long userId) {
+        checkUserIsTeacher();
+
         Course course = courseRepository.findById(courseId).orElseThrow(NotFoundException::new);
         User user = userRepository.findById(userId).orElseThrow(NotFoundException::new);
         return addUserCourseRegistration(user, course);

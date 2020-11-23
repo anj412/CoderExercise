@@ -14,6 +14,10 @@ import ru.croc.coder.domain.User;
 import ru.croc.coder.school.pearsons.SchoolRank;
 
 public interface UserRepository extends CrudRepository<User, Long> {
+	Optional<User> findTopByRegistrations_Course_IdNot(Long id);
+
+	Optional<User> findTopByRegistrations_Course_Id(Long id);
+
 
 
 
