@@ -1,4 +1,4 @@
-package ru.croc.coder.repository;
+package ru.croc.coder.handler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +10,6 @@ import org.springframework.data.rest.core.annotation.RepositoryEventHandler;
 import org.springframework.stereotype.Component;
 
 import ru.croc.coder.domain.User;
-import ru.croc.coder.service.CourseService;
 
 @Component
 @RepositoryEventHandler
@@ -21,7 +20,7 @@ public class UserEventsHandler {
 	@HandleBeforeCreate
 	public void handleUserBeforeSave(User user) {
 		log.info("!!!: userId {}", user.getId());
-		user.setFirstName(user.getFirstName() + "TestBefore");
+		//user.setFirstName(user.getFirstName() + "TestBefore");
 		//user.setPassword("hash:" + user.getPassword().hashCode() );
 	}
 	
@@ -29,7 +28,7 @@ public class UserEventsHandler {
 	@HandleAfterCreate
 	public void handleUserAfterSave(User user) {
 		log.info("!!!: userId {}", user.getId());
-		user.setFirstName(user.getFirstName() + "TestAfter");
+		//user.setFirstName(user.getFirstName() + "TestAfter");
 		//user.setPassword("hash" + user.getPassword().hashCode() );		
 	}
 

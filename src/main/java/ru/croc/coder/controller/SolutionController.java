@@ -25,21 +25,21 @@ public class SolutionController {
     private SolutionService solutionService;
     private ModelMapper modelMapper = new ModelMapper();
 
-    public SolutionController(ExerciseService exerciseService) {
+    public SolutionController(SolutionService solutionService) {
         this.solutionService = solutionService;
         //this.modelMapper = modelMapper;
     }
-    @Operation(summary = "Authenticate user")
+/*    @Operation(summary = "Authenticate user")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Authenticated user", content = {
                     @Content(schema = @Schema(implementation = UserDto.class))
             }),
             @ApiResponse(responseCode = "401", description = "Authentication failed")
-    })
+    })*/
     @PostMapping("/exercises/{exerciseId}/solutions")
     public SolutionDto submit(@PathVariable Long exerciseId, @RequestBody String text) {
-        Solution solution = solutionService.submit(exerciseId, text);
-        return modelMapper.map(solution, SolutionDto.class);
+
+        return modelMapper.map(solutionService.submit(exerciseId, text), SolutionDto.class);
     }
 
 }

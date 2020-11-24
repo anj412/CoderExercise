@@ -1,19 +1,21 @@
 package ru.croc.coder.controller;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.croc.coder.controller.dto.UserCourseRegistrationDto;
-import ru.croc.coder.controller.dto.UserDto;
-import ru.croc.coder.controller.dto.UserStatDto;
+import ru.croc.coder.controller.dto.*;
+import ru.croc.coder.domain.Solution;
 import ru.croc.coder.domain.UserCourseRegistration;
 import ru.croc.coder.repository.UserRepository;
 import ru.croc.coder.service.CourseService;
 import ru.croc.coder.service.ExerciseService;
 import ru.croc.coder.service.UserContext;
 import ru.croc.coder.service.UserService;
+
+import java.util.List;
 
 @RestController
 public class UserController {
@@ -74,8 +76,8 @@ public class UserController {
     }
 
     @PostMapping("/diktant")
-    public void diktant() {
-        userService.totalDiktant();
+    public List<SolutionDto> diktant() {
+        return modelMapper.map(userService.totalDiktant(), new TypeToken<List<SolutionDto>>() {}.getType());
     }
 
 }

@@ -7,15 +7,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.croc.coder.domain.Exercise;
+import ru.croc.coder.domain.Solution;
 import ru.croc.coder.domain.User;
 import ru.croc.coder.domain.support.UserStat;
 import ru.croc.coder.repository.*;
 import ru.croc.coder.school.exercises.DifficultyLevelOfExercise;
 import ru.croc.coder.school.pearsons.SchoolRank;
-import ru.croc.coder.service.exceptions.NotFoundException;
-import ru.croc.coder.service.exceptions.ServiceException;
-import ru.croc.coder.service.exceptions.UserConstrainException;
+import ru.croc.coder.service.exceptions.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -142,7 +142,8 @@ public class UserService implements ServiceCommander {
     }
 
     @Transactional(isolation = Isolation.SERIALIZABLE, noRollbackFor = ServiceException.class)
-    public void totalDiktant() {
+    public List<Solution> totalDiktant() {
+        checkUserIsTeacher();
         //List<User> users = userRepository.selectAllUsers();
         List<User> users = userRepository.findAll();
         for (User u: users)
@@ -152,6 +153,8 @@ public class UserService implements ServiceCommander {
         for (Exercise e: exercises)
             log.info("In DIKTANT list exerciseId {}", e.getId());
 
+        List<Solution> solutions = new ArrayList<>();
+
         for (User user: users) {
             userContext.setCurrentUser(user);
             log.info("UserId {} writing diktant", user.getId());
@@ -159,10 +162,15 @@ public class UserService implements ServiceCommander {
 
             for (Exercise exercise : exercises) {
                 log.info("ExerciseId {} for diktant", exercise.getId());
-                for (int i = 0; i < 2; i++)
-                    solutionService.submit(exercise.getId(), "anyRemedy");
+                try {
+                    for (int i = 0; i < 2; i++)
+                        solutions.add(solutionService.submit(exercise.getId(), "anyRemedy"));
+                } catch (NotPassedRestrictionsException e) {
+                    log.info("{} , so we go on next", e.getMessage());
+                }
             }
         }
+        return solutions;
     }
 
     public void checkUserIsTeacher() {

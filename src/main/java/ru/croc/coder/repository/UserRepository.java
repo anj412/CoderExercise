@@ -30,9 +30,6 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
 	List<User> findAll();
 
-	List<User> findBySchoolRankEquals(SchoolRank schoolRank);
-
-	List<User> findBySchoolRankAndRegistrations_Course_Id(SchoolRank schoolRank, Long id);
 
 	long countBySchoolRankAndRegistrations_Course_Id(SchoolRank schoolRank, Long id);
 

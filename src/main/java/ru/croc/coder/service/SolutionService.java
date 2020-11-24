@@ -12,10 +12,7 @@ import ru.croc.coder.repository.ExerciseRepository;
 import ru.croc.coder.repository.ExerciseRestrictionRepository;
 import ru.croc.coder.repository.SolutionRepository;
 import ru.croc.coder.repository.UserRepository;
-import ru.croc.coder.service.exceptions.ExerciseConstrainException;
-import ru.croc.coder.service.exceptions.NotFoundException;
-import ru.croc.coder.service.exceptions.NotPassedRestrictionsException;
-import ru.croc.coder.service.exceptions.ServiceException;
+import ru.croc.coder.service.exceptions.*;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -48,20 +45,21 @@ public class SolutionService {
     @Transactional(isolation = Isolation.SERIALIZABLE, noRollbackFor = ServiceException.class)
     public Solution submit (Long exerciseId, String text) {
 
+        User user = userContext.getCurrentUser();
+        if (user == null) throw new PermissionException("User must be auth");
+
         //User user = userRepository.findById(userId).orElseThrow(NotFoundException::new);
         Exercise exercise = exerciseRepository.findById(exerciseId).orElseThrow(NotFoundException::new);
-
-        User user = userContext.getCurrentUser();
 
         userRepository.save(user.setAttemptsCount(user.getAttemptsCount()+1));
 
         if (exercise.getMaxAttempts() != null) {
             long attempts = solutionRepository.countByAuthorAndExercise(user, exercise);
             if (attempts >= exercise.getMaxAttempts())
-                throw new ExerciseConstrainException("Max attempts exceeded");
+                throw new SolutionConstrainException("Max attempts exceeded");
         }
 
-        //restrictionCheck(exercise);
+        restrictionCheck(exercise);
 
         Solution solution = new Solution()
                 .setAuthor(user)
