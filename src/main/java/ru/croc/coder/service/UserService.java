@@ -143,7 +143,7 @@ public class UserService implements ServiceCommander {
 
     @Transactional(isolation = Isolation.SERIALIZABLE, noRollbackFor = ServiceException.class)
     public List<Solution> totalDiktant() {
-        checkUserIsTeacher();
+
         //List<User> users = userRepository.selectAllUsers();
         List<User> users = userRepository.findAll();
         for (User u: users)

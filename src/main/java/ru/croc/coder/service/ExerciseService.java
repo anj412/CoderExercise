@@ -81,7 +81,6 @@ public class ExerciseService implements ServiceCommander {
     public List<Exercise> exercisesFromFile(String fileName){
 
         checkUserIsTeacher();
-
         ObjectMapper objectMapper = new ObjectMapper();
         Resource resource = new ClassPathResource(fileName);
         List<Exercise> exercises = null;

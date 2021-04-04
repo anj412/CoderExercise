@@ -102,18 +102,13 @@ public class Init implements CommandLineRunner {
 				ProgrammingLanguage.JAVA, "a+b", 7);
 		Exercise exercise9 = exerciseService. addExercise(author, "9th exercise",DifficultyLevelOfExercise.EASY,
 				ProgrammingLanguage.JAVA, "a+b", 7);
-		//addExercise(author, "5th exercise",DifficultyLevelOfExercise.AVERAGE, ProgrammingLanguage.JAVA, "a+b", 3);
-		//addExercise(author, "6th exercise",DifficultyLevelOfExercise.AVERAGE, ProgrammingLanguage.JAVA, "a+b", 3);
-		//addExercise(author, "7th exercise",DifficultyLevelOfExercise.AVERAGE, ProgrammingLanguage.JAVA, "a+b", 3);
-		//addExercise(author, "8th exercise",DifficultyLevelOfExercise.AVERAGE, ProgrammingLanguage.JAVA, "a+b", 3);
-		//addExercise(author, "9th exercise",DifficultyLevelOfExercise.AVERAGE, ProgrammingLanguage.JAVA, "a+b", 3);
+
 		
 		addExerciseAttachment("1th for Second", exercise2);
 		addExerciseAttachment("2th for Second", exercise2);
 		addExerciseAttachment("3th for Second", exercise2);
 		addExerciseAttachment("1th for Third", exercise3);
 		addExerciseAttachment("2th for Third", exercise3);
-		
 		
 
 		Course course1 = courseService.addCourse("Начальный",CourseStatus.OPENED);
@@ -148,9 +143,6 @@ public class Init implements CommandLineRunner {
 		courseService.addExerciseCourseRegistration(exercise7, course1);
 		courseService.addExerciseCourseRegistration(exercise8, course1);
 		courseService.addExerciseCourseRegistration(exercise9, course1);
-
-		//totalDiktant();
-
 
 	}
 
